@@ -43,9 +43,9 @@ uint16_t redondeado;
 uint8_t cont = 0;
 
 SemaphoreHandle_t xSemaphore_1;
+SemaphoreHandle_t xSemaphore_2;
 TimerHandle_t xAutoReloadTimer;
 BaseType_t xTimer1Started;
-StaticStreamBuffer_t xStreamBuffer;
 }; // namespace
 
 // --------------------------------------------------------------
@@ -66,8 +66,7 @@ void enviarSemaforoCallback(TimerHandle_t xTimer){
 //****************************************//
 //          tomarMedidas()               //
 // -------------------------------------//
-// Toma medidas del sensor y las envía //
-// por Bluetooth                      //
+// Toma medidas del sensor.            //
 //***********************************//
 void tomarMedidas(void *pvParameter) {
   using namespace Globales;
@@ -82,13 +81,28 @@ void tomarMedidas(void *pvParameter) {
 
       cont++;
 
-      // ...y finalmenete las emite como una baliza.
+      xSemaphoreGive( xSemaphore_2);
+    }
+  }
+}
+
+//****************************************//
+//          publicarMedidas()            //
+// -------------------------------------//
+// Envía por Bluetooth las medidas     //
+// tomadas                            //
+//***********************************//
+void publicarMedidas(void *pvParameter) {
+  using namespace Globales;
+  for (;;) {
+    // Si se toma el semáforo 2...
+    if ( xSemaphoreTake( xSemaphore_2, portMAX_DELAY)) {
+      // ...las emite como una baliza.
       pantallita.escribir("Publicando datos \n");
-      elPublicador.publicarSO2(redondeado,
+      elPublicador.publicarSO2(cont,
                                cont,
                                1000 // intervalo de emisión
                               );
-
       imprimirMedidas();
     }
   }
@@ -104,12 +118,15 @@ void tomarMedidas(void *pvParameter) {
 void imprimirMedidas() {
   using namespace Globales;
   
-  pantallita.escribir("Valor calibrado: \n");
-  Serial.println(medicion);
+  //pantallita.escribir("Valor calibrado: \n");
+  //Serial.println(medicion);
 
+
+  //pantallita.escribir("Valor calibrado redondeado: \n");
+  //Serial.println(redondeado);
 
   pantallita.escribir("Valor calibrado redondeado: \n");
-  Serial.println(redondeado);
+  Serial.println(cont); 
 }
 
 
@@ -127,6 +144,7 @@ void setup() {
 
   // Crear los dos semáforos binarios
   xSemaphore_1 = xSemaphoreCreateBinary();
+  xSemaphore_2 = xSemaphoreCreateBinary();
 
   // Temporizador para desencadenar interrupción
   //xTimerCreate(Nombre Temporizador, Tiempo en Ticks (20 ticks = 1s), pdTRUE(AutoReload)/pdFALSE(OneShot),Id Temporizador, Función de Interrupción) 
@@ -136,6 +154,7 @@ void setup() {
   // Crea una tarea
   //xTaskCreate(Puntero a Función, Nombre de Tarea, Número de Palabras, Valor de Entrada, Prioridad, Handler)
   xTaskCreate(&tomarMedidas, "tomarMedidas", 2048, NULL, 1, NULL);
+  xTaskCreate(&publicarMedidas, "publicarMedidas", 2048, NULL, 1, NULL);
 
   pantallita.escribir("Setup termina \n");
 }
