@@ -19,6 +19,8 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,9 +30,19 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.daferfus_upv.btle.BD.ComprobadorEstadoRed;
 import com.example.daferfus_upv.btle.Workers.EscaneadoWorker;
 import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
+
+import java.util.HashMap;
+import java.util.Map;
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
@@ -38,10 +50,12 @@ import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 public class MainActivity extends AppCompatActivity {
     public static final String BROADCAST_DATOS_GUARDADOS = "com.example.daferfus_upv.btle";
 
+
     // ------------------------------------------------------------------
     // Concesión de Permisos
     // ------------------------------------------------------------------
-
+TextView textViewUsuario;
+LoginActivity login;
     // --------------------------------------------------------------
     //              solicitarPermiso() <-
     //
@@ -148,7 +162,17 @@ public class MainActivity extends AppCompatActivity {
         WorkManager
                 .getInstance()
                 .enqueue(medicionesWorkRequest);
+        textViewUsuario= findViewById(R.id.textViewMostrarUsuario);
+mostrarUsuario();
+
     } // onCreate()
+
+    //muestra el usuario registrado
+public void mostrarUsuario(){
+    Bundle datos = this.getIntent().getExtras();
+    String variable_string = datos.getString("Usuario");
+    textViewUsuario.setText("El usuario es: "+ variable_string);
+}
 } // class
 // --------------------------------------------------------------
 // --------------------------------------------------------------

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.daferfus_upv.btle">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -21,15 +22,17 @@
         <service
             android:name=".Utilidades.TratamientoDeLecturas"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"
+            tools:ignore="Instantiatable"></service>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"></activity>
 
         <receiver android:name=".BD.ComprobadorEstadoRed">
             <intent-filter>
