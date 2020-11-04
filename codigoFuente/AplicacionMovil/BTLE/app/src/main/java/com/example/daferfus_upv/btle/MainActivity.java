@@ -42,6 +42,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.daferfus_upv.btle.BD.ComprobadorEstadoRed;
+import com.example.daferfus_upv.btle.Utilidades.TratamientoDeLecturas;
+import com.example.daferfus_upv.btle.Utilidades.Utilidades;
 import com.example.daferfus_upv.btle.Workers.EscaneadoWorker;
 import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -60,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
     // ------------------------------------------------------------------
     // Concesión de Permisos
     // ------------------------------------------------------------------
-TextView textViewUsuario;
-LoginActivity login;
+    TextView textViewUsuario;
+    LoginActivity login;
     // --------------------------------------------------------------
     //              solicitarPermiso() <-
     //
@@ -139,6 +141,9 @@ LoginActivity login;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Mostramos el valor del SO2 en el panel principal
+        TextView valorSO2 = (TextView) findViewById(R.id.valorSO2);
 
         // Se activa el adaptador Bluetooth
         BluetoothAdapter adaptadorBluetooth = BluetoothAdapter.getDefaultAdapter();

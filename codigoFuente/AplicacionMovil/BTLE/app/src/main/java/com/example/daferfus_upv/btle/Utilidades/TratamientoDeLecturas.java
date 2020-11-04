@@ -10,11 +10,13 @@ package com.example.daferfus_upv.btle.Utilidades;
 
 import android.bluetooth.BluetoothDevice;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.example.daferfus_upv.btle.R;
 import com.example.daferfus_upv.btle.Workers.BDWorker;
 import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 
@@ -22,6 +24,7 @@ import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 // ------------------------------------------------------------------
 
 public class TratamientoDeLecturas {
+
     public static int valor;
 
     // --------------------------------------------------------------
