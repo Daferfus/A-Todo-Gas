@@ -9,6 +9,7 @@ package com.example.daferfus_upv.btle.Workers;
 // ------------------------------------------------------------------
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -28,7 +29,7 @@ import java.util.Date;
 // ------------------------------------------------------------------
 
 
-public class BDWorker extends Worker {
+public class MantenimientoDeMedidasWorker extends Worker {
     public LecturasDbHelper mDBHelper;
     public SQLiteDatabase mDb;
     public Context contexto;
@@ -40,7 +41,7 @@ public class BDWorker extends Worker {
     // Invocado desde: TratamientoDeLecturas::haLLegadoUnBeacon()
     // Función: Inicializa y configura la tarea de interacción con la base de datos.
     // -----------------------------------------------------------------------------
-    public BDWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public MantenimientoDeMedidasWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         // Se inicializa la base de datos...
         mDBHelper = new LecturasDbHelper(getApplicationContext());
@@ -67,22 +68,20 @@ public class BDWorker extends Worker {
     public Result doWork() {
         String ubicacion = GeolocalizacionWorker.ubicacion;
         int valor = TratamientoDeLecturas.valor;
-        enviarMedicion(ubicacion, valor);
 
-        return Result.success();
-    } // ()
-
-    // ---------------------------------------------------------------------------
-    //                  enviarMedicion() <-
-    //
-    // Invocado desde: haLlegadoUnBeacon()
-    // Función: Manda a la base de datos, datos para insertar en la tabla Lecturas.
-    // ----------------------------------------------------------------------------
-    public void enviarMedicion(String ubicacion, int valor) {
         Log.d("BDWorker", "Enviando Medición");
         String idMagnitud = "SO2";
         int estadoSincronizacionServidor = 1;
-        mDBHelper.guardarLecturaEnServidor(new Lectura(new Date().toString(), ubicacion, valor, idMagnitud, estadoSincronizacionServidor), contexto, mDb);
+        Cursor lectura = mDBHelper.getLectura(new Date().toString(), ubicacion);
+        if(lectura.getCount()==0 & ubicacion!=null){
+            mDBHelper.guardarLecturaEnServidor(new Lectura(new Date().toString(), ubicacion, valor, idMagnitud, estadoSincronizacionServidor), contexto, mDb);
+        }else{
+            Log.d("BDWorker", "Lectura ya insertada: " + lectura);
+        }
+
+        mDBHelper.borrarLecturasSincronizadas();
+
+        return Result.success();
     } // ()
 } // class
 // --------------------------------------------------------------

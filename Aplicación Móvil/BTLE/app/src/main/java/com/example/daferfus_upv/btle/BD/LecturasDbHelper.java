@@ -247,14 +247,14 @@ public class LecturasDbHelper extends SQLiteOpenHelper {
 
     // ---------------------------------------------------------------------------------------------
     //                  -> Cursor
-    //                  getLecuras() <-
+    //                  getLectura() <-
     //
     // Invocado desde: MainActivity::cargarLecturas()
     // Función: Nos da todas las lecturas almacenadas en SQLite.
     // ---------------------------------------------------------------------------------------------
-    public Cursor getLecturas() {
+    public Cursor getLectura(String momento, String ubicacion) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM Lecturas ORDER BY momento ASC;";
+        String sql = "SELECT * FROM Lecturas WHERE momento = '" + momento + "' AND ubicacion = '" + ubicacion + "' ORDER BY momento ASC";
         return db.rawQuery(sql, null);
     }
 

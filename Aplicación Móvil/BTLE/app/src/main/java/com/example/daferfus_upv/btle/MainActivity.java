@@ -19,6 +19,8 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,7 @@ import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
 import com.example.daferfus_upv.btle.BD.ComprobadorEstadoRed;
+import com.example.daferfus_upv.btle.Utilidades.TratamientoDeLecturas;
 import com.example.daferfus_upv.btle.Workers.EscaneadoWorker;
 import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 
@@ -37,7 +40,8 @@ import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 
 public class MainActivity extends AppCompatActivity {
     public static final String BROADCAST_DATOS_GUARDADOS = "com.example.daferfus_upv.btle";
-
+    private Button botonTestBateria;
+    private Button botonTestNodoRoto;
     // ------------------------------------------------------------------
     // Concesión de Permisos
     // ------------------------------------------------------------------
@@ -140,7 +144,20 @@ public class MainActivity extends AppCompatActivity {
                     "Sin el permiso localización no puedo ubicar tus" +
                             " lecturas.", ConstantesAplicacion.PETICION_LOCALIZACION, this);
         }
-
+        botonTestBateria = (Button) findViewById(R.id.button);
+        botonTestBateria.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                TratamientoDeLecturas.hayError(-20000);
+            }
+        });
+        botonTestNodoRoto = (Button) findViewById(R.id.button2);
+        botonTestNodoRoto.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                TratamientoDeLecturas.hayError(-15000);
+            }
+        });
         // Se empieza con la ejecución automática de la búsqueda del dispositivo del usuario.
         WorkRequest medicionesWorkRequest =
                 new OneTimeWorkRequest.Builder(EscaneadoWorker.class)
