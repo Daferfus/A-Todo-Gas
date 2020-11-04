@@ -88,13 +88,18 @@
                     android:layout_height="wrap_content">
 
 
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="28dp"
-                        android:src="@drawable/cloud"
+                    <TextView
+                        android:id="@+id/textViewLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_mediumitalic"
+                        android:text="Nivel Contaminación"
+                        android:textAlignment="textEnd"
+                        android:textColor="#ffff"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        tools:ignore="MissingConstraints" />
+                        app:layout_constraintStart_toStartOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -124,7 +129,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
-                        android:text="21 C"
+                        android:text="40%"
                         android:textColor="#ffff"
                         android:textSize="18dp"
                         app:layout_constraintEnd_toEndOf="parent"
