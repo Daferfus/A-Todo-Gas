@@ -47,20 +47,29 @@ class Medidor {
         while ( !Serial1 ) delay(10);
         /*while ( Serial1.available() == false) {
           delay(10);
-        }*/
+          }*/
         sensorData[i] = Serial1.parseInt();
       } // for
 
       int valorPPB = sensorData[1];
-      Serial.println("Valor sin calibrar: ");
+      Serial.println("El valorPPB es: ");
       Serial.println(valorPPB);
+      if (valorPPB == 0) {
+        Serial.println("ESTA DESCONECTADO EL SERIAL");
+        return -15000;
+      }// if
 
-      double pesoMolecularSO2 = 64.06;
-      double res = ((valorPPB * 12.187 * pesoMolecularSO2)/(273.15 + sensorData[5]))/1000;
-      Serial.println("Valor calibrado: ");
-      Serial.println(res);
-      return res;
-    }
+      else {
+        Serial.println("Valor sin calibrar: ");
+        Serial.println(valorPPB);
+
+        double pesoMolecularSO2 = 64.06;
+        double res = ((valorPPB * 12.187 * pesoMolecularSO2) / (273.15 + sensorData[5])) / 1000;
+        Serial.println("Valor calibrado: ");
+        Serial.println(res);
+        return res;
+      }// else
+    }//()
 
 
 

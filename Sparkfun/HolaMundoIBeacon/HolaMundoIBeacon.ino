@@ -38,9 +38,12 @@ namespace Globales {
 Publicador elPublicador;
 
 double medicion;
-uint16_t redondeado;
+int16_t redondeado;
 
-uint8_t cont = 0;
+double medicion2;
+int16_t redondeado2;
+
+int8_t cont = 0;
 
 SemaphoreHandle_t xSemaphore_1;
 SemaphoreHandle_t xSemaphore_2;
@@ -57,9 +60,9 @@ BaseType_t xTimer1Started;
 // Cuando el temporizador llega a 0,             //
 // activa la función tomarMedida()              //
 //*********************************************//
-void enviarSemaforoCallback(TimerHandle_t xTimer){
-    using namespace Globales;
-    xSemaphoreGive( xSemaphore_1);
+void enviarSemaforoCallback(TimerHandle_t xTimer) {
+  using namespace Globales;
+  xSemaphoreGive( xSemaphore_1);
 }
 
 
@@ -78,6 +81,20 @@ void tomarMedidas(void *pvParameter) {
       pantallita.escribir("Lectura del sensor iniciada...esperando... \n");
       medicion = elMedidor.medirSO2();
       redondeado = floor(medicion);
+
+      medicion2 = elMedidor.medirSO2();
+      redondeado2 = floor(medicion2);
+
+      bool comprobacionCalibracion = comprobarCalibracion(redondeado, redondeado2);
+      if (comprobacionCalibracion == true) {
+        Serial.println("FALLO DE CALIBRACION");
+        Serial.println(redondeado);
+        Serial.println(redondeado2);
+        elPublicador.publicarSO2(-10000,
+                                 cont,
+                                 1000 // intervalo de emisión
+                                );
+      }
 
       cont++;
 
@@ -117,22 +134,59 @@ void publicarMedidas(void *pvParameter) {
 //**********************************//
 void imprimirMedidas() {
   using namespace Globales;
-  
+
   //pantallita.escribir("Valor calibrado: \n");
+  //Serial.println(medicion);
   //Serial.println(medicion);
 
 
   //pantallita.escribir("Valor calibrado redondeado: \n");
   //Serial.println(redondeado);
 
-  pantallita.escribir("Valor calibrado redondeado: \n");
-  Serial.println(cont); 
+  Serial.println("Aqui viene imprimir medidas");
+  Serial.println(redondeado);
+  Serial.println(redondeado);
+  //pantallita.escribir("Valor calibrado redondeado: \n");
+  //Serial.println(cont);
 }
 
 
 
 // --------------------------------------------------------------
 // --------------------------------------------------------------
+// Z, Z -->
+// comprobarCalibracion() <-
+// -> V/F
+bool comprobarCalibracion(int medida1, int medida2) {
+  if (medida1 != medida2 || medida1 != medida2 + 1 || medida1 != medida2 - 1) {
+    return false;
+  }// if
+  else {
+    return true;
+  }// else
+}//()
+
+// --------------------------------------------------------------
+// --------------------------------------------------------------
+// --------------------------------------------------------------
+// --------------------------------------------------------------
+// Z -->
+// comprobarCalibracion() <-
+// -> V/F
+void comprobarBateria(int pin) {
+  using namespace Globales;
+  int voltaje = analogRead(pin);
+
+  if ( voltaje == 3.55 ) {
+    elPublicador.publicarSO2(-20000,
+                             cont,
+                             1000 // intervalo de emisión
+                            );
+  }// if
+}// ()
+// --------------------------------------------------------------
+// --------------------------------------------------------------
+
 
 void setup() {
   using namespace Globales;
@@ -147,10 +201,10 @@ void setup() {
   xSemaphore_2 = xSemaphoreCreateBinary();
 
   // Temporizador para desencadenar interrupción
-  //xTimerCreate(Nombre Temporizador, Tiempo en Ticks (20 ticks = 1s), pdTRUE(AutoReload)/pdFALSE(OneShot),Id Temporizador, Función de Interrupción) 
+  //xTimerCreate(Nombre Temporizador, Tiempo en Ticks (20 ticks = 1s), pdTRUE(AutoReload)/pdFALSE(OneShot),Id Temporizador, Función de Interrupción)
   xAutoReloadTimer = xTimerCreate("AutoReaload", 20, pdTRUE, 0, enviarSemaforoCallback);
   xTimer1Started = xTimerStart(xAutoReloadTimer, 0);
-  
+
   // Crea una tarea
   //xTaskCreate(Puntero a Función, Nombre de Tarea, Número de Palabras, Valor de Entrada, Prioridad, Handler)
   xTaskCreate(&tomarMedidas, "tomarMedidas", 2048, NULL, 1, NULL);
