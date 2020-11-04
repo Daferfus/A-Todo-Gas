@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BTLE</string>
+    <string name="textoIniciarSesionInvitado">Inicia sesión como invitado -></string>
+    <string name="botonIniciarSesión">Inicia sesión</string>
+    <string name="textoEmailLogin">Email </string>
+    <string name="textoContrasenyaLogin">Contraseña</string>
+    <string name="textoContrasenyaOEmailIncorrecto">Usuario o contraseña incorrecto.</string>
+</resources>
