@@ -19,7 +19,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.example.daferfus_upv.btle.ConstantesAplicacion;
-import com.example.daferfus_upv.btle.MainActivity;
+import com.example.daferfus_upv.btle.Activities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

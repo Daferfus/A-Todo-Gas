@@ -27,11 +27,9 @@ import com.example.daferfus_upv.btle.Utilidades.TratamientoDeLecturas;
 import java.io.IOException;
 import java.util.Date;
 
-import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.ESTADO_SINCRONIZACION_SERVIDOR;
-import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.ID_MAGNITUD;
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.MOMENTO;
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.UBICACION;
-import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.VALOR;
+import static com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker.ubicacion;
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
@@ -40,6 +38,7 @@ import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.VA
 public class MantenimientoDeMedidasWorker extends Worker {
     public LecturasDbHelper mDBHelper;
     public SQLiteDatabase mDb;
+    public Context contexto;
 
     // ----------------------------------------------------------------------------
     //                  constructor() <-
@@ -67,12 +66,12 @@ public class MantenimientoDeMedidasWorker extends Worker {
             Log.d("Base de Datos: ", mSQLException.toString());
             throw mSQLException;
         }
+        contexto = getApplicationContext();
     }
 
     @NonNull
     @Override
     public Result doWork() {
-        String ubicacion = GeolocalizacionWorker.ubicacion;
         int valor = TratamientoDeLecturas.valor;
 
         Log.d("BDWorker", "Enviando Medición");
@@ -108,6 +107,7 @@ public class MantenimientoDeMedidasWorker extends Worker {
 
         return Result.success();
     } // ()
+
 } // class
 // --------------------------------------------------------------
 // --------------------------------------------------------------

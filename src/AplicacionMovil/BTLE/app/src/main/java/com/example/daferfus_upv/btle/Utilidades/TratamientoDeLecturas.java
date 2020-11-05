@@ -24,8 +24,15 @@ import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 // ------------------------------------------------------------------
 
 public class TratamientoDeLecturas {
+
     public static int valor;
-    public static int cont;
+    private static int cont;
+
+    public static byte[] valorSO2 ;
+    public static byte[] getValorSO2() {
+        return valorSO2;
+    }
+
 
     // --------------------------------------------------------------
     //                  constructor()
@@ -54,11 +61,12 @@ public class TratamientoDeLecturas {
             WorkManager
                     .getInstance()
                     .enqueue(geolocalizacionWorkRequest);
-            
-            
+
+
             // Se extraen las mediciones para su posterior inserción.
             if(extraerMediciones(trama)) {
-                // MantenimientoDeMedidasWorker: Tarea centrada en la llamada de métodos de la base de datos.
+
+                // BDWorker: Tarea centrada en la llamada de métodos de la base de datos.
                 WorkRequest envioMedicionWorkRequest =
                         new OneTimeWorkRequest.Builder(MantenimientoDeMedidasWorker.class)
                                 .build();
@@ -69,13 +77,6 @@ public class TratamientoDeLecturas {
         } // if()
     } // ()
 
-    // ---------------------------------------------------------------------------
-    //                  extraerMediciones() ->bool
-    //                  <- TramaIBeacon
-    //
-    // Invocado desde: haLlegadoUnBeacon()
-    // Función: Extrae las mediciones de la trama de la baliza para su tratamiento.
-    // ----------------------------------------------------------------------------
     public static boolean extraerMediciones(TramaIBeacon trama) {
         byte[] contador = trama.getMajor();
         byte[] valorSO2 = trama.getMinor();
@@ -105,15 +106,15 @@ public class TratamientoDeLecturas {
     // ----------------------------------------------------------------------------
     public static boolean hayError(int val){
         NotificationUtils notis = new NotificationUtils(MyApplication.getAppContext());
-        if(val==-10000){
+        if(val==10000){
             return false;
         }else{
-            if(val==-15000){
-                notis.notificarAltaImportancia(1, MyApplication.getAppContext().getString(R.string.nomre_app),  MyApplication.getAppContext().getString(R.string.nodo_estropeado));
+            if(val==15000){
+                notis.notificarAltaImportancia(1, MyApplication.getAppContext().getString(R.string.nombre_app),  MyApplication.getAppContext().getString(R.string.nodo_estropeado));
                 return false;
             }else{
-                if(val==-20000){
-                    notis.notificarAltaImportancia(2, MyApplication.getAppContext().getString(R.string.nomre_app),  MyApplication.getAppContext().getString(R.string.bateria_baja));
+                if(val==20000){
+                    notis.notificarAltaImportancia(2, MyApplication.getAppContext().getString(R.string.nombre_app),  MyApplication.getAppContext().getString(R.string.bateria_baja));
                     return false;
                 }else{
                     return true;
@@ -121,6 +122,7 @@ public class TratamientoDeLecturas {
             }
         }
     }
+
 
     // --------------------------------------------------------------
     //              mostrarInformacionDispositivoBTLE() ->

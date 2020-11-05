@@ -247,7 +247,7 @@ public class LecturasDbHelper extends SQLiteOpenHelper {
 
     // ---------------------------------------------------------------------------------------------
     //                  -> Cursor
-    //                  getLectura() <-
+    //                  getLecuras() <-
     //
     // Invocado desde: MainActivity::cargarLecturas()
     // Función: Nos da todas las lecturas almacenadas en SQLite.
@@ -297,8 +297,11 @@ public class LecturasDbHelper extends SQLiteOpenHelper {
         contentValues.put(ESTADO_SINCRONIZACION_SERVIDOR, status);
         Log.d("Base de Datos", "Actualizando estado de sincronización");
         // La siguiente sentencia SQL sería la correcta, pero por algún motivo sale un error.
-        db.execSQL("UPDATE " + TABLE_NAME + " SET " + contentValues + " WHERE " + MOMENTO + "='" + momento + "' AND " + UBICACION + "=" + ubicacion);
+        //db.execSQL("UPDATE " + TABLE_NAME + " SET " + contentValues + " WHERE " + MOMENTO + "=" + momento + " AND " + UBICACION + "=" + ubicacion);
         // near "Oct": syntax error (code 1 SQLITE_ERROR): , while compiling: UPDATE Lecturas SET estadoSincronizacionServidor=1 WHERE momento=Fri Oct 23 07:14:46 GMT+02:00 2020 AND ubicacion=38.9735361 - -0.1801669
+
+        // Esta sentencia consigue los mismos efectos pero de una forma más chapucera y muy generalista.
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + contentValues + " WHERE " + ESTADO_SINCRONIZACION_SERVIDOR + "=" + 0);
         db.close();
         return true;
     }

@@ -4,7 +4,7 @@
 // ----------------------------------------------------------
 
 
-package com.example.daferfus_upv.btle;
+package com.example.daferfus_upv.btle.Activities;
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
@@ -18,20 +18,31 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.example.daferfus_upv.btle.AcercaDe.InstruccionesActivity;
 import com.example.daferfus_upv.btle.BD.ComprobadorEstadoRed;
+import com.example.daferfus_upv.btle.ConstantesAplicacion;
+import com.example.daferfus_upv.btle.PaginaGraficas;
+import com.example.daferfus_upv.btle.Perfil;
+import com.example.daferfus_upv.btle.R;
 import com.example.daferfus_upv.btle.Workers.EscaneadoWorker;
 import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
@@ -39,33 +50,11 @@ import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 public class MainActivity extends AppCompatActivity {
     public static final String BROADCAST_DATOS_GUARDADOS = "com.example.daferfus_upv.btle";
 
-    // --------------------------------------------------------------
-    // Ejecución en bucle de la función buscarEsteDispositivoBTLE()
-    // con un retraso de 1 segundo entre busquedas.
-    // --------------------------------------------------------------
-    private final Handler ejecucionBusquedaAutomatica = new Handler();
-    private final Runnable ejecutable = new Runnable() {
-        @Override
-        public void run() {
-            // Por cada segundo pasado, la aplicación busca los datos que han sido
-            // mandados por el microcontrolador.
-            // Se empieza con la ejecución automática de la búsqueda del dispositivo del usuario.
-
-            Log.d("MainActivity", "Llamando a escaner....");
-            WorkRequest medicionesWorkRequest =
-                    new OneTimeWorkRequest.Builder(EscaneadoWorker.class)
-                            .build();
-            WorkManager
-                    .getInstance()
-                    .enqueue(medicionesWorkRequest);
-            ejecucionBusquedaAutomatica.postDelayed(this, 15000);
-        }// ()
-    };// new Runnable
-
     // ------------------------------------------------------------------
     // Concesión de Permisos
     // ------------------------------------------------------------------
-
+    TextView textViewUsuario;
+    LoginActivity login;
     // --------------------------------------------------------------
     //              solicitarPermiso() <-
     //
@@ -87,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{permiso}, codigoPeticion);
         }
     }
-
 
     // --------------------------------------------------------------
     //              onRequestPermissionsResult() ->
@@ -145,6 +133,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Mostramos el valor del SO2 en el panel principal
+        TextView textViewvalorSO2 = (TextView) findViewById(R.id.valorSO2);
+
         // Se activa el adaptador Bluetooth
         BluetoothAdapter adaptadorBluetooth = BluetoothAdapter.getDefaultAdapter();
         if (!adaptadorBluetooth.isEnabled()) {
@@ -165,8 +156,135 @@ public class MainActivity extends AppCompatActivity {
                     "Sin el permiso localización no puedo ubicar tus" +
                             " lecturas.", ConstantesAplicacion.PETICION_LOCALIZACION, this);
         }
-        ejecucionBusquedaAutomatica.postDelayed(ejecutable, 1000);
+
+        // Se empieza con la ejecución automática de la búsqueda del dispositivo del usuario.
+        WorkRequest medicionesWorkRequest =
+                new OneTimeWorkRequest.Builder(EscaneadoWorker.class)
+                        .build();
+        WorkManager
+                .getInstance()
+                .enqueue(medicionesWorkRequest);
+        textViewUsuario= findViewById(R.id.textViewMostrarUsuario);
+        mostrarUsuario();
+
+
+
+//      MENU FLOTANTE
+        final FloatingActionsMenu menuBotones = (FloatingActionsMenu) findViewById(R.id.grupofab);
+        menuBotones.setScaleX(0);
+        menuBotones.setScaleY(0);
+
+        //aplicamos un efecto de entrada
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            final Interpolator interpolador = AnimationUtils.loadInterpolator(getBaseContext(),
+                    android.R.interpolator.fast_out_slow_in);
+
+            menuBotones.animate()
+                    .scaleX(1)
+                    .scaleY(1)
+                    .setInterpolator(interpolador)
+                    .setDuration(600)
+                    .setStartDelay(500)
+            ;
+        }
+        //Llamamos a los botones
+        final FloatingActionButton fab1 = findViewById(R.id.fab1);
+        final FloatingActionButton fab2 = findViewById(R.id.fab2);
+        final FloatingActionButton fab3 = findViewById(R.id.fab3);
+
+
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+                menuBotones.collapse();
+            }
+        });
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), InstruccionesActivity.class);
+                i.putExtra("Usuario", envioDatosEntreActividades());
+                startActivity(i);
+                menuBotones.collapse();
+            }
+        });
+        fab3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), Perfil.class);
+                i.putExtra("Usuario", envioDatosEntreActividades());
+                startActivity(i);
+                menuBotones.collapse();
+            }
+        });
+
+//      CARDVIEW RECORRIDO
+        CardView cardViewRecorrido = findViewById(R.id.cardViewRecorrido); // creating a CardView and assigning a value.
+
+        cardViewRecorrido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // do whatever you want to do on click (to launch any fragment or activity you need to put intent here.)
+                mostrarToast("Recorrido");
+            }
+        });
+//      CARDVIEW MEDICIONES
+        CardView cardViewMediciones = findViewById(R.id.cardViewMediciones); // creating a CardView and assigning a value.
+
+        cardViewMediciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), PaginaGraficas.class);
+                i.putExtra("Usuario", envioDatosEntreActividades());
+                startActivity(i);
+                // do whatever you want to do on click (to launch any fragment or activity you need to put intent here.)
+            }
+        });
+//      CARDVIEW LOGROS
+        CardView cardViewLogros = findViewById(R.id.cardViewLogros); // creating a CardView and assigning a value.
+
+        cardViewLogros.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // do whatever you want to do on click (to launch any fragment or activity you need to put intent here.)
+                mostrarToast("Logros");
+            }
+        });
+//      CARDVIEW CONSEJOS
+        CardView cardViewConsejos = findViewById(R.id.cardViewConsejos); // creating a CardView and assigning a value.
+
+        cardViewConsejos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // do whatever you want to do on click (to launch any fragment or activity you need to put intent here.)
+                mostrarToast("Consejos");
+            }
+        });
+
+//  Mostramos el valor del minor en su sitio correspondiente
+        //TratamientoDeLecturas valorSO2 = new TratamientoDeLecturas();
+        //textViewvalorSO2.setText(valorSO2.getValorSO2().toString());
+
     } // onCreate()
+
+    //muestra el usuario registrado
+public void mostrarUsuario(){
+    Bundle datos = this.getIntent().getExtras();
+    String variable_string = datos.getString("Usuario");
+    textViewUsuario.setText("Hola "+ variable_string);
+}
+    //muestra Toast
+    private void mostrarToast(String mensaje) {
+        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+    }
+
+    public String envioDatosEntreActividades(){
+        Bundle datos = this.getIntent().getExtras();
+        String variable_string = datos.getString("Usuario");
+        return variable_string;
+    }
 } // class
 // --------------------------------------------------------------
 // --------------------------------------------------------------
