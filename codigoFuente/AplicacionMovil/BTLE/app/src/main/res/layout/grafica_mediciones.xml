@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/colorOscuro">
+
+    <LinearLayout
+        android:id="@+id/linearAtras"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:elevation="2dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/atrasBoton"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/flecha_atras_dorada" />
+
+        <ImageView
+            android:id="@+id/panelBoton2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/dashboard_dorado"
+            android:layout_marginLeft="8dp"/>
+    </LinearLayout>
+
+    <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_margin="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <ListView
+        android:id="@+id/listview_graficas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chart"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

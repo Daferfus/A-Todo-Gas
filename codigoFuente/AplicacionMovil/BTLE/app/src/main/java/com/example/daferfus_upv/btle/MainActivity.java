@@ -232,8 +232,10 @@ public class MainActivity extends AppCompatActivity {
         cardViewMediciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), PaginaGraficas.class);
+                i.putExtra("Usuario", envioDatosEntreActividades());
+                startActivity(i);
                 // do whatever you want to do on click (to launch any fragment or activity you need to put intent here.)
-                mostrarToast("Mediciones");
             }
         });
 //      CARDVIEW LOGROS
