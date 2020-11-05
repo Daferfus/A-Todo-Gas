@@ -82,6 +82,8 @@ void tomarMedidas(void *pvParameter) {
       medicion = elMedidor.medirSO2();
       redondeado = floor(medicion);
 
+      delay(1000);
+      
       medicion2 = elMedidor.medirSO2();
       redondeado2 = floor(medicion2);
 
@@ -90,7 +92,7 @@ void tomarMedidas(void *pvParameter) {
         Serial.println("FALLO DE CALIBRACION");
         Serial.println(redondeado);
         Serial.println(redondeado2);
-        elPublicador.publicarSO2(-10000,
+        elPublicador.publicarSO2(10000,
                                  cont,
                                  1000 // intervalo de emisión
                                 );
@@ -116,7 +118,7 @@ void publicarMedidas(void *pvParameter) {
     if ( xSemaphoreTake( xSemaphore_2, portMAX_DELAY)) {
       // ...las emite como una baliza.
       pantallita.escribir("Publicando datos \n");
-      elPublicador.publicarSO2(cont,
+      elPublicador.publicarSO2(redondeado,
                                cont,
                                1000 // intervalo de emisión
                               );
@@ -178,7 +180,7 @@ void comprobarBateria(int pin) {
   int voltaje = analogRead(pin);
 
   if ( voltaje == 3.55 ) {
-    elPublicador.publicarSO2(-20000,
+    elPublicador.publicarSO2(20000,
                              cont,
                              1000 // intervalo de emisión
                             );

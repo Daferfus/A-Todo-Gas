@@ -56,7 +56,7 @@ class Medidor {
       Serial.println(valorPPB);
       if (valorPPB == 0) {
         Serial.println("ESTA DESCONECTADO EL SERIAL");
-        return -15000;
+        return 15000;
       }// if
 
       else {
