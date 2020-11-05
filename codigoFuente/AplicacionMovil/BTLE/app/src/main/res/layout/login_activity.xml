@@ -35,7 +35,7 @@
             android:textSize="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="10dp"
-            android:text="Correo"/>
+            android:text="@string/textoEmailLogin"/>
 
         <EditText
             android:id="@+id/editTextEmailLogin"
@@ -62,7 +62,7 @@
             android:textSize="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="10dp"
-            android:text="Contraseña"/>
+            android:text="@string/textoContrasenyaLogin"/>
 
         <EditText
             android:id="@+id/editTextContrasenyaLogin"
@@ -88,7 +88,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="25dp"
             android:layout_marginBottom="30dp"
-            android:text="¿Olvidaste tu contraseña?"/>
+            android:text="@string/textoContrasenyaOEmailOlvidada"/>
         <Button
             android:id="@+id/buttonIniciarSesion"
             android:layout_width="match_parent"
@@ -97,7 +97,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/btn_fondo_color"
-            android:text="Inciar sesión"
+            android:text="@string/botonIniciarSesión"
             android:textColor="#d0000000"
             android:textSize="16sp"
             android:elevation="5dp"/>
@@ -112,7 +112,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="¿Aún no tienes cuenta? Entra como invitado"
+                android:text="@string/textoIniciarSesionInvitado"
                 android:textSize="16sp"
                 android:textColor="#fff"
                 />
@@ -122,12 +122,13 @@
 
         <TextView
             android:id="@+id/textViewIniciarSesionInvitado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:background="@android:color/transparent"
-            android:text="ENTRAR COMO INVITADO"
+            android:text="@string/entrarInvitado"
             android:textColor="#4074CC"
             android:textStyle="bold" />
 

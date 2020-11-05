@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
-            android:text="Panel Principal"
+            android:text="@string/textPanelPrincipal"
             android:textColor="#5E5E5E"
             android:textSize="24dp" />
 
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_regular"
-        android:text="Observa el mapa de tu zona hoy."
+        android:text="@string/textObserva"
         android:textColor="#F6CD8F"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +93,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_mediumitalic"
-                        android:text="Nivel Contaminación"
+                        android:text="@string/textContaminacion"
                         android:textAlignment="textEnd"
                         android:textColor="#ffff"
                         android:textSize="12dp"
@@ -115,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="Mapa Gases"
+                    android:text="@string/textMapa"
                     android:textColor="#ffff"
                     android:textSize="24dp" />
 
@@ -156,7 +156,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="S02"
+                        android:text="@string/textSO2"
                         android:textColor="#ffff" />
 
                     <TextView
@@ -182,7 +182,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="NO2"
+                        android:text="@string/textNO2"
                         android:textColor="#ffff" />
 
                     <TextView
@@ -207,7 +207,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CO2"
+                        android:text="@string/textCO2"
                         android:textColor="#ffff" />
 
                     <TextView
@@ -244,7 +244,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/roboto_medium"
-            android:text="Elige una de nuestras opciones"
+            android:text="@string/textElige"
             android:textColor="#F6CD8F"
             android:textSize="18dp" />
 
@@ -286,7 +286,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="Recorrido"
+                    android:text="@string/textRecorrido"
                     android:textColor="#5E5E5E"
                     android:textSize="18dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -325,7 +325,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="Mediciones"
+                    android:text="@string/textMediciones"
                     android:textColor="#5E5E5E"
                     android:textSize="18dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -375,7 +375,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="Logros"
+                    android:text="@string/textLogros"
                     android:textColor="#5E5E5E"
                     android:textSize="18dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -415,7 +415,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="Consejos"
+                    android:text="@string/textConsejos"
                     android:textColor="#5E5E5E"
                     android:textSize="18dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -458,7 +458,7 @@
             app:fab_colorPressed="@color/colorPrimaryDark"
             app:fab_icon="@drawable/logout"
             app:fab_size="mini"
-            app:fab_title="Cerrar Sesión" />
+            app:fab_title="@string/textLogOut" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab2"
@@ -468,7 +468,7 @@
             app:fab_colorPressed="@color/colorPrimaryDark"
             app:fab_icon="@drawable/acercade"
             app:fab_size="mini"
-            app:fab_title="Acerca De"/>
+            app:fab_title="@string/textAcercaDe"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab3"
@@ -478,7 +478,7 @@
             app:fab_colorPressed="@color/colorPrimaryDark"
             app:fab_icon="@drawable/user"
             app:fab_size="mini"
-            app:fab_title="Perfil"/>
+            app:fab_title="@string/textPerfil"/>
 
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>

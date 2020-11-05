@@ -58,7 +58,6 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     public static final String BROADCAST_DATOS_GUARDADOS = "com.example.daferfus_upv.btle";
 
-
     // ------------------------------------------------------------------
     // Concesión de Permisos
     // ------------------------------------------------------------------
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Mostramos el valor del SO2 en el panel principal
-        TextView valorSO2 = (TextView) findViewById(R.id.valorSO2);
+        TextView textViewvalorSO2 = (TextView) findViewById(R.id.valorSO2);
 
         // Se activa el adaptador Bluetooth
         BluetoothAdapter adaptadorBluetooth = BluetoothAdapter.getDefaultAdapter();
@@ -174,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                 .getInstance()
                 .enqueue(medicionesWorkRequest);
         textViewUsuario= findViewById(R.id.textViewMostrarUsuario);
-mostrarUsuario();
+        mostrarUsuario();
 
 
 
@@ -221,7 +220,8 @@ mostrarUsuario();
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(getApplicationContext(), Perfil.class);
+                i.putExtra("Usuario", envioDatosEntreActividades());
                 startActivity(i);
                 menuBotones.collapse();
             }
@@ -268,6 +268,10 @@ mostrarUsuario();
             }
         });
 
+//  Mostramos el valor del minor en su sitio correspondiente
+        //TratamientoDeLecturas valorSO2 = new TratamientoDeLecturas();
+        //textViewvalorSO2.setText(valorSO2.getValorSO2().toString());
+
     } // onCreate()
 
     //muestra el usuario registrado
@@ -279,6 +283,12 @@ public void mostrarUsuario(){
     //muestra Toast
     private void mostrarToast(String mensaje) {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+    }
+
+    public String envioDatosEntreActividades(){
+        Bundle datos = this.getIntent().getExtras();
+        String variable_string = datos.getString("Usuario");
+        return variable_string;
     }
 } // class
 // --------------------------------------------------------------

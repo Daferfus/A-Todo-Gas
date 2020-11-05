@@ -1,8 +1,52 @@
 <resources>
     <string name="app_name">BTLE</string>
-    <string name="textoIniciarSesionInvitado">Inicia sesión como invitado -></string>
-    <string name="botonIniciarSesión">Inicia sesión</string>
-    <string name="textoEmailLogin">Email </string>
+
+    <!-- SPLASH -->
+    <string name="textoSplash">Lleva tu salud al siguiente nivel</string>
+
+
+    <!-- LOG IN -->
+    <string name="textoEmailLogin">Correo </string>
     <string name="textoContrasenyaLogin">Contraseña</string>
-    <string name="textoContrasenyaOEmailIncorrecto">Usuario o contraseña incorrecto.</string>
+    <string name="textoContrasenyaOEmailOlvidada">¿Olvidaste tu contraseña?</string>
+    <string name="textoContrasenyaOEmailIncorrecto">Email o Contraseña Incorrectos</string>
+    <string name="botonIniciarSesión">Inciar sesión</string>
+    <string name="textoIniciarSesionInvitado">¿Aún no tienes cuenta? Entra como invitado</string>
+    <string name="entrarInvitado">ENTRAR COMO INVITADO</string>
+
+
+    <!-- PANEL PRINCIPAL CLIENTE -->
+    <string name="textPanelPrincipal">Panel Principal </string>
+    <string name="textObserva">Observa el mapa de tu zona hoy.</string>
+    <string name="textContaminacion">Nivel Contaminación</string>
+    <string name="textMapa">Mapa Gases</string>
+    <string name="textSO2">SO2</string>
+    <string name="textNO2">NO2</string>
+    <string name="textCO2">CO2</string>
+    <string name="textElige">Elige una de nuestras opciones</string>
+    <string name="textRecorrido">Recorrido</string>
+    <string name="textMediciones">Mediciones</string>
+    <string name="textLogros">Logros</string>
+    <string name="textConsejos">Consejos</string>
+    <string name="textPerfil">Perfil</string>
+    <string name="textAcercaDe">Acerca De</string>
+    <string name="textLogOut">Cerrar Sesión</string>
+
+
+    <!-- PANEL PRINCIPAL CLIENTE -->
+    <string name="textPanelAdmin">Panel Principal Admin</string>
+    <string name="textGestion">¿Qué quieres gestionar?</string>
+    <string name="adminUsuarios">Usuarios</string>
+    <string name="adminSensores">Sensores</string>
+    <string name="adminMejora">Aquí tienes tus stats</string>
+    <string name="textLevel">Level</string>
+    <string name="textHTrabajadas">H. Trabajadas</string>
+    <string name="textPuesto">Puesto</string>
+
+
+    <!-- PERFIL -->
+    <string name="textPasos">Pasos</string>
+    <string name="textRanking">Ranking</string>
+    <string name="textEditar">Editar</string>
+
 </resources>

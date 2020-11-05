@@ -23,7 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="250dp"
-        android:text="Lleva tu salud al siguiente nivel"
+        android:text="@string/textoSplash"
         android:textAlignment="center"
         android:textColor="#F6CD8F"
         android:textSize="20sp"

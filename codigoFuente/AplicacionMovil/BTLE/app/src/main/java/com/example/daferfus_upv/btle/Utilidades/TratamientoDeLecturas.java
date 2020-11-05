@@ -12,6 +12,7 @@ import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
@@ -26,6 +27,12 @@ import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 public class TratamientoDeLecturas {
 
     public static int valor;
+
+    public static byte[] valorSO2 ;
+    public static byte[] getValorSO2() {
+        return valorSO2;
+    }
+
 
     // --------------------------------------------------------------
     //                  constructor()
@@ -91,7 +98,7 @@ public class TratamientoDeLecturas {
     // ----------------------------------------------------------------------------
     public static void extraerMediciones(TramaIBeacon trama) {
         byte[] contador = trama.getMajor();
-        byte[] valorSO2 = trama.getMinor();
+        valorSO2 = trama.getMinor();
         valor = Utilidades.bytesToInt(valorSO2);
         Log.d("Tratamiento Datos", "Contador: " + Utilidades.bytesToInt(contador));
         Log.d("Tratamiento Datos", "SO2: " + Utilidades.bytesToInt(valorSO2));
