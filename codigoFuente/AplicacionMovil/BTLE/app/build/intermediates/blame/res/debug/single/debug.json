@@ -1,0 +1,406 @@
+[
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\font_roboto_regular.ttf.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\font\\roboto_regular.ttf"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_sensor.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\sensor.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_atodogas2.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_atodogas2.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_indicator_selected.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\indicator_selected.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_atodogas2.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_atodogas2.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_atodogas2_foreground.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_atodogas2_foreground.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\font_roboto_bold.ttf.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\font\\roboto_bold.ttf"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_atodogas.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_atodogas.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_atodogas2_foreground.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_atodogas2_foreground.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_mediciones.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\mediciones.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\layout_perfil_activity.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\layout\\perfil_activity.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_instrucciones.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\layout\\activity_instrucciones.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btn_gradient_style.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\btn_gradient_style.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_atodogas2_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_atodogas2_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\layout_layout_screen.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\layout\\layout_screen.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_bg_view.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\bg_view.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_dashboard_dorado.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable-v24\\dashboard_dorado.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\layout_login_activity.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\layout\\login_activity.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_flecha_atras.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable-v24\\flecha_atras.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_atodogas_foreground.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_atodogas_foreground.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_atodogas_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_atodogas_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_card.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable-v24\\card.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_consejos.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\consejos.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_buttonstyle.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\buttonstyle.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_atodogas_foreground.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_atodogas_foreground.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_flecha_atras2.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable-v24\\flecha_atras2.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btn_fondo_color.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\btn_fondo_color.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\layout_admin_main.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\layout\\admin_main.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_img_2.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\img_2.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_dashboard.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable-v24\\dashboard.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_arrow_forward_black_24dp.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\ic_arrow_forward_black_24dp.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_input.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\input.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_browser.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable-v24\\browser.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_logout.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\logout.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_atodogas_foreground.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_atodogas_foreground.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_logros.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\logros.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_user_circle.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\user_circle.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_atodogas2_foreground.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_atodogas2_foreground.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_indicator_selector.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\indicator_selector.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_smartphone.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable-v24\\smartphone.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_acercade.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\acercade.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\anim_abajo_splash_anim.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\anim\\abajo_splash_anim.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_atodogas_foreground.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_atodogas_foreground.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_email.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable-v24\\email.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_img_3.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\img_3.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable-v24\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_atodogas2_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_atodogas2_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_atodogas_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_atodogas_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\layout_listview_mediciones.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\layout\\listview_mediciones.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ruta.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\ruta.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_bg.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\bg.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btn_cerrar_admin.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\btn_cerrar_admin.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_atodogas2_foreground.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_atodogas2_foreground.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_f.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\f.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_indicator_default.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\indicator_default.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_atodogas.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_atodogas.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_atodogas2_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_atodogas2_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_background.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_atodogas_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_atodogas_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_atodogas.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_atodogas.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_atodogas2.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_atodogas2.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\font_roboto_italic.ttf.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\font\\roboto_italic.ttf"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_atodogas.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_atodogas.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_img_1.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\img_1.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_atodogas2_round.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_atodogas2_round.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_atodogas.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_atodogas.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_flecha_atras_dorada.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable-v24\\flecha_atras_dorada.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\layout_list_item.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\layout\\list_item.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\anim_acercade_anim_boton.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\anim\\acercade_anim_boton.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_atodogas_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_atodogas_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_atodogas_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_atodogas_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_atodogas2_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_atodogas2_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_atodogas_round.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_atodogas_round.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\font_roboto_mediumitalic.ttf.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\font\\roboto_mediumitalic.ttf"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_atodogas2.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_atodogas2.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_atodogas2_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_atodogas2_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_atodogas2.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_atodogas2.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\layout_splash_screen.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\layout\\splash_screen.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_atodogas_foreground.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_atodogas_foreground.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_user.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\user.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\anim_arriba_splash_anim.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\anim\\arriba_splash_anim.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_atodogas2_foreground.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_atodogas2_foreground.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_fondo_eti_fab.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\fondo_eti_fab.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\layout_grafica_mediciones.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\layout\\grafica_mediciones.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\font_roboto_medium.ttf.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\font\\roboto_medium.ttf"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_atodogas2.xml.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_atodogas2.xml"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\drawable_logohoriszontal.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\drawable\\logohoriszontal.png"
+    },
+    {
+        "merged": "D:\\Descargas\\BTLE\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_atodogas.png.flat",
+        "source": "D:\\Descargas\\BTLE\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_atodogas.png"
+    }
+]
