@@ -37,7 +37,7 @@
         <activity android:name=".Perfil"
             android:screenOrientation="portrait"
             tools:ignore="Instantiatable"/>
-        <activity android:name=".InstruccionesActivity"
+        <activity android:name=".AcercaDe.InstruccionesActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".LoginActivity"
             android:screenOrientation="portrait"

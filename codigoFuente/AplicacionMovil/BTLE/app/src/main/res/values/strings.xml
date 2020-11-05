@@ -10,7 +10,7 @@
     <string name="textoContrasenyaLogin">Contraseña</string>
     <string name="textoContrasenyaOEmailOlvidada">¿Olvidaste tu contraseña?</string>
     <string name="textoContrasenyaOEmailIncorrecto">Email o Contraseña Incorrectos</string>
-    <string name="botonIniciarSesión">Inciar sesión</string>
+    <string name="botonIniciarSesión">Iniciar sesión</string>
     <string name="textoIniciarSesionInvitado">¿Aún no tienes cuenta? Entra como invitado</string>
     <string name="entrarInvitado">ENTRAR COMO INVITADO</string>
 
@@ -49,4 +49,9 @@
     <string name="textRanking">Ranking</string>
     <string name="textEditar">Editar</string>
 
+
+    <!-- INSTRUCCIONES -->
+    <string name="textSiguiente">Siguiente</string>
+    <string name="textSaltar">Saltar</string>
+    <string name="textEmpezar">Empezar</string>
 </resources>

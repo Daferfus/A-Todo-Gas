@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,23 +33,12 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.example.daferfus_upv.btle.AcercaDe.InstruccionesActivity;
 import com.example.daferfus_upv.btle.BD.ComprobadorEstadoRed;
-import com.example.daferfus_upv.btle.Utilidades.TratamientoDeLecturas;
-import com.example.daferfus_upv.btle.Utilidades.Utilidades;
 import com.example.daferfus_upv.btle.Workers.EscaneadoWorker;
 import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-
-import java.util.HashMap;
-import java.util.Map;
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
