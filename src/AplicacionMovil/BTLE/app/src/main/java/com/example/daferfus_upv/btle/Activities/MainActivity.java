@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     // Concesión de Permisos
     // ------------------------------------------------------------------
     TextView textViewUsuario;
+    public static TextView textViewvalorSO2;
     LoginActivity login;
     // --------------------------------------------------------------
     //              solicitarPermiso() <-
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Mostramos el valor del SO2 en el panel principal
-        TextView textViewvalorSO2 = (TextView) findViewById(R.id.valorSO2);
+        textViewvalorSO2 = (TextView) findViewById(R.id.valorSO2);
 
         // Se activa el adaptador Bluetooth
         BluetoothAdapter adaptadorBluetooth = BluetoothAdapter.getDefaultAdapter();

@@ -39,7 +39,7 @@
             </div>
             
             <div id="lecturas">
-                32 <p class="copy">nivel Azufre</p>
+                <span id="lecturaSO2">32</span> <p class="copy">nivel Azufre</p>
             </div>
             
             <div id="lecturas">
@@ -245,7 +245,7 @@
   var peticionLecturas = new XMLHttpRequest();
 
   // Dicha petición, es una petición GET que se manda al archivo PHP lecturasREST.
-  peticionLecturas.open("get", "lecturasREST.php", true);
+  peticionLecturas.open("get", "../Backend/lecturasREST.php", true);
   peticionLecturas.send();
   
   // Tras recibir respuesta a dicha petición...
@@ -258,13 +258,14 @@
     // Debido a eso, se le quitan esos dos carácteres. 
     var textoJSON_Apto = textoJSON_noApto.substring(0, textoJSON_noApto.length - 4);
 
+console.log(textoJSON_Apto);
     // Ahora el texto ya es apto para pasarlo a JSON.
     var json = JSON.parse(textoJSON_Apto);
 
     // Una vez pasado a dicha formato, y por cada objeto en dicho JSON, se accede a sus propiedades.
     // (En este protipo solo se imprime la propiedad valor del último objeto)
     for (lectura in json) {
-      document.getElementById("lecturas").innerHTML = json[lectura].valor;
+      document.getElementById("lecturaSO2").innerHTML = json[lectura].valor;
     }
   };
 </script>

@@ -15,6 +15,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.example.daferfus_upv.btle.Activities.MainActivity;
 import com.example.daferfus_upv.btle.MyApplication;
 import com.example.daferfus_upv.btle.R;
 import com.example.daferfus_upv.btle.Workers.MantenimientoDeMedidasWorker;
@@ -83,6 +84,7 @@ public class TratamientoDeLecturas {
         if(hayError(Utilidades.bytesToInt(valorSO2))){
             if(cont!=Utilidades.bytesToInt(contador)){
                 valor = Utilidades.bytesToInt(valorSO2);
+                MainActivity.textViewvalorSO2.setText(Integer.toString(valor));
                 cont = Utilidades.bytesToInt(contador);
                 Log.d("Tratamiento Datos", "Contador: " + Utilidades.bytesToInt(contador));
                 Log.d("Tratamiento Datos", "SO2: " + Utilidades.bytesToInt(valorSO2));
