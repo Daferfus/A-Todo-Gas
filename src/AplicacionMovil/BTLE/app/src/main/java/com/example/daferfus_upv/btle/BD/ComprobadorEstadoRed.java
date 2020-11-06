@@ -37,14 +37,14 @@ import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.VA
 public class ComprobadorEstadoRed extends BroadcastReceiver {
 
         private Context contexto;
-        private LecturasDbHelper bd;
+        private Logica bd;
 
         @Override
         public void onReceive(Context contexto, Intent intent) {
 
             this.contexto = contexto;
 
-            bd = new LecturasDbHelper(contexto);
+            bd = new Logica(contexto);
 
             ConnectivityManager gestionadorConexion = (ConnectivityManager) contexto.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetwork = gestionadorConexion.getActiveNetworkInfo();

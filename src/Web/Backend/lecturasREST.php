@@ -44,7 +44,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
  $idMagnitud = $_POST['idMagnitud']; 
  
  // ...crea una sentencia para insertar dichos parámetros en la base de datos...
- $stmt = $conn->prepare("INSERT INTO Lecturas VALUES (?, ?, ?, ?)");
+ $stmt = $conn->prepare("INSERT INTO lecturas VALUES (?, ?, ?, ?)");
  
  // ...ata los parámetros a dicha sentencia...
  $stmt->bind_param("ssss",$momento,$ubicacion,$valor,$idMagnitud);
@@ -73,7 +73,7 @@ else if($_SERVER['REQUEST_METHOD']=='GET'){
  $lecturas = array();
 
  // ...crea una consulta SQL para recoger todas las lecturas...
- $stmt = "SELECT * FROM Lecturas";
+ $stmt = "SELECT * FROM lecturas";
 
  // ...se ejecuta la consulta...
  $retval = mysqli_query($conn, $stmt);

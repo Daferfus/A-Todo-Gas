@@ -20,7 +20,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.example.daferfus_upv.btle.BD.Lectura;
-import com.example.daferfus_upv.btle.BD.LecturasDbHelper;
+import com.example.daferfus_upv.btle.BD.Logica;
 import com.example.daferfus_upv.btle.MyApplication;
 import com.example.daferfus_upv.btle.Utilidades.TratamientoDeLecturas;
 
@@ -36,7 +36,7 @@ import static com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker.ubicac
 
 
 public class MantenimientoDeMedidasWorker extends Worker {
-    public LecturasDbHelper mDBHelper;
+    public Logica mDBHelper;
     public SQLiteDatabase mDb;
     public Context contexto;
 
@@ -50,7 +50,7 @@ public class MantenimientoDeMedidasWorker extends Worker {
     public MantenimientoDeMedidasWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         // Se inicializa la base de datos...
-        mDBHelper = new LecturasDbHelper(getApplicationContext());
+        mDBHelper = new Logica(getApplicationContext());
 
         // ...la actualiza...
         try {

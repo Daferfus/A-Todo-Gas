@@ -39,7 +39,7 @@ import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.UB
 // ------------------------------------------------------------------
 
 
-public class LecturasDbHelper extends SQLiteOpenHelper {
+public class Logica extends SQLiteOpenHelper {
 
 
     // ------------------------------------------------------------------
@@ -64,7 +64,7 @@ public class LecturasDbHelper extends SQLiteOpenHelper {
     // Invocado desde: MainActivity
     // Función: Inicializa y configura la base de datos.
     // --------------------------------------------------------------
-    public LecturasDbHelper(Context contexto) {
+    public Logica(Context contexto) {
         super(contexto, NOMBRE_BD, null, VERSION_BD);
 
         // Se coge la ruta dentro del móvil donde se copiara la base datos...
