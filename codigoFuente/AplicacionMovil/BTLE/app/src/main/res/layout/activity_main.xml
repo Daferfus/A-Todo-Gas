@@ -8,7 +8,7 @@
     android:background="#30353B"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".MainActivity">
+    tools:context=".Activities.MainActivity">
 
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
             android:text="@string/textPanelPrincipal"
-            android:textColor="#5E5E5E"
+            android:textColor="@color/colorBlanco"
             android:textSize="24dp" />
 
         <View

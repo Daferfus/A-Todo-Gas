@@ -4,10 +4,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.daferfus_upv.btle.Activities.MainActivity;
+import com.example.daferfus_upv.btle.POJOS.Lecturas;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +40,7 @@ public class PaginaGraficas extends AppCompatActivity {
         findViewById(R.id.linearAtras).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent i = new Intent (getApplicationContext(),MainActivity.class);
+                Intent i = new Intent (getApplicationContext(), MainActivity.class);
                 i.putExtra("Usuario", envioDatosEntreActividades());
                 startActivity(i);
             }
@@ -112,6 +117,20 @@ public class PaginaGraficas extends AppCompatActivity {
         ArrayAdapter ADP = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1,datosString);
         listView.setAdapter(ADP);
 
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+                android.R.layout.simple_list_item_1, datosString) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text = (TextView) view.findViewById(android.R.id.text1);
+                text.setTextColor(Color.WHITE);
+                return view;
+            }
+        };
+
+        listView.setAdapter((adapter));
+
     }
 
 
@@ -120,6 +139,5 @@ public class PaginaGraficas extends AppCompatActivity {
         String variable_string = datos.getString("Usuario");
         return variable_string;
     }
-
 
 }

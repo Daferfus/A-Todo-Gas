@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">BTLE</string>
+    <string name="nombre_app">A Todo Gas</string>
 
     <!-- SPLASH -->
     <string name="textoSplash">Lleva tu salud al siguiente nivel</string>
@@ -54,4 +55,10 @@
     <string name="textSiguiente">Siguiente</string>
     <string name="textSaltar">Saltar</string>
     <string name="textEmpezar">Empezar</string>
+
+
+    <!-- NOTIFICACIONES -->
+    <string name="nodo_estropeado">El nodo sensor se ha estropeado, contacte con nuestro soporte técnico.</string>
+    <string name="bateria_baja">El nodo sensor se está quedando sin batería, se recomienda cargarlo.</string>
+    <string name="nodo_desconectado">El nodo sensor se ha sido desconectado, compruebe que el bluetooth está activado y que el nodo está a menos de 10m.</string>
 </resources>

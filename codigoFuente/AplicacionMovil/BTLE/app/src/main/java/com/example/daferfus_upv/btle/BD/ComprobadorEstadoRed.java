@@ -19,7 +19,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.example.daferfus_upv.btle.ConstantesAplicacion;
-import com.example.daferfus_upv.btle.MainActivity;
+import com.example.daferfus_upv.btle.Activities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,14 +37,14 @@ import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.VA
 public class ComprobadorEstadoRed extends BroadcastReceiver {
 
         private Context contexto;
-        private LecturasDbHelper bd;
+        private Logica bd;
 
         @Override
         public void onReceive(Context contexto, Intent intent) {
 
             this.contexto = contexto;
 
-            bd = new LecturasDbHelper(contexto);
+            bd = new Logica(contexto);
 
             ConnectivityManager gestionadorConexion = (ConnectivityManager) contexto.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetwork = gestionadorConexion.getActiveNetworkInfo();

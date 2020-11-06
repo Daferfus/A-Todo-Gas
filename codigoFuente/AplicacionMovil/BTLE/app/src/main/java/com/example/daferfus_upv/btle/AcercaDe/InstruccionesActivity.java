@@ -14,9 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.daferfus_upv.btle.AcercaDe.InstruccionesViewPagerAdapter;
-import com.example.daferfus_upv.btle.AcercaDe.InterfazPantalla;
-import com.example.daferfus_upv.btle.MainActivity;
+import com.example.daferfus_upv.btle.Activities.MainActivity;
 import com.example.daferfus_upv.btle.R;
 import com.google.android.material.tabs.TabLayout;
 

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.daferfus_upv.btle.Activities.LoginActivity;
+
 public class SplashScreen extends AppCompatActivity {
 
     //Variables animaciones
@@ -29,7 +31,7 @@ public class SplashScreen extends AppCompatActivity {
         animArriba = AnimationUtils.loadAnimation(this, R.anim.arriba_splash_anim);
         animAbajo = AnimationUtils.loadAnimation(this, R.anim.abajo_splash_anim);
 
-        //Hooks
+        //Asignación
         imagen = findViewById(R.id.imagenSplash);
         eslogan = findViewById(R.id.textViewSplash);
 
@@ -41,7 +43,7 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 try {
                     sleep(3000);
-                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (InterruptedException e) {

@@ -10,15 +10,15 @@ package com.example.daferfus_upv.btle.Utilidades;
 
 import android.bluetooth.BluetoothDevice;
 import android.util.Log;
-import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.example.daferfus_upv.btle.Activities.MainActivity;
+import com.example.daferfus_upv.btle.MyApplication;
 import com.example.daferfus_upv.btle.R;
-import com.example.daferfus_upv.btle.Workers.BDWorker;
+import com.example.daferfus_upv.btle.Workers.MantenimientoDeMedidasWorker;
 import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 
 // ------------------------------------------------------------------
@@ -27,6 +27,7 @@ import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 public class TratamientoDeLecturas {
 
     public static int valor;
+    private static int cont;
 
     public static byte[] valorSO2 ;
     public static byte[] getValorSO2() {
@@ -61,48 +62,68 @@ public class TratamientoDeLecturas {
             WorkManager
                     .getInstance()
                     .enqueue(geolocalizacionWorkRequest);
-            
-            
+
+
             // Se extraen las mediciones para su posterior inserción.
-            extraerMediciones(trama);
+            if(extraerMediciones(trama)) {
 
-            // BDWorker: Tarea centrada en la llamada de métodos de la base de datos.
-            WorkRequest envioMedicionWorkRequest =
-                    new OneTimeWorkRequest.Builder(BDWorker.class)
-                            .build();
-            WorkManager
-                    .getInstance()
-                    .enqueue(envioMedicionWorkRequest);
-
-            /*Data.Builder comandoBorrado = new Data.Builder();
-            comandoBorrado.putString("Acción", "Borrar");
-
-            WorkRequest borradoMedicionesWorkRequest =
-                    new OneTimeWorkRequest.Builder(BDWorker.class)
-                            .setInputData(comandoBorrado.build())
-                            .build();
-            WorkManager
-                    .getInstance()
-                    .enqueue(borradoMedicionesWorkRequest);*/
-            //enviarMedicion();
-            /*mDBHelper.borrarLecturasSincronizadas();*/
+                // BDWorker: Tarea centrada en la llamada de métodos de la base de datos.
+                WorkRequest envioMedicionWorkRequest =
+                        new OneTimeWorkRequest.Builder(MantenimientoDeMedidasWorker.class)
+                                .build();
+                WorkManager
+                        .getInstance()
+                        .enqueue(envioMedicionWorkRequest);
+            }
         } // if()
     } // ()
 
-    // ---------------------------------------------------------------------------
-    //                  extraerMediciones() ->
-    //                  <- TramaIBeacon
-    //
-    // Invocado desde: haLlegadoUnBeacon()
-    // Función: Extrae las mediciones de la trama de la baliza para su tratamiento.
-    // ----------------------------------------------------------------------------
-    public static void extraerMediciones(TramaIBeacon trama) {
+    public static boolean extraerMediciones(TramaIBeacon trama) {
         byte[] contador = trama.getMajor();
-        valorSO2 = trama.getMinor();
-        valor = Utilidades.bytesToInt(valorSO2);
-        Log.d("Tratamiento Datos", "Contador: " + Utilidades.bytesToInt(contador));
-        Log.d("Tratamiento Datos", "SO2: " + Utilidades.bytesToInt(valorSO2));
+        byte[] valorSO2 = trama.getMinor();
+        if(hayError(Utilidades.bytesToInt(valorSO2))){
+            if(cont!=Utilidades.bytesToInt(contador)){
+                valor = Utilidades.bytesToInt(valorSO2);
+                MainActivity.textViewvalorSO2.setText(Integer.toString(valor));
+                cont = Utilidades.bytesToInt(contador);
+                Log.d("Tratamiento Datos", "Contador: " + Utilidades.bytesToInt(contador));
+                Log.d("Tratamiento Datos", "SO2: " + Utilidades.bytesToInt(valorSO2));
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        return false;
+
+
     } // ()
+
+    // ---------------------------------------------------------------------------
+    //                  heyError() ->bool
+    //                  <- valor
+    //
+    // Invocado desde: extraerMediciones()
+    // Función: Comprueba si se ha producido algún tipo de error.
+    // ----------------------------------------------------------------------------
+    public static boolean hayError(int val){
+        NotificationUtils notis = new NotificationUtils(MyApplication.getAppContext());
+        if(val==10000){
+            return false;
+        }else{
+            if(val==15000){
+                notis.notificarAltaImportancia(1, MyApplication.getAppContext().getString(R.string.nombre_app),  MyApplication.getAppContext().getString(R.string.nodo_estropeado));
+                return false;
+            }else{
+                if(val==20000){
+                    notis.notificarAltaImportancia(2, MyApplication.getAppContext().getString(R.string.nombre_app),  MyApplication.getAppContext().getString(R.string.bateria_baja));
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        }
+    }
 
 
     // --------------------------------------------------------------

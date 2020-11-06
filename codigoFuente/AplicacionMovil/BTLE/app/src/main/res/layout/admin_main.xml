@@ -277,13 +277,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="Jose"
-                    android:textColor="#ffff"
-                    android:textSize="24dp" />
+            <TextView
+                android:id="@+id/tvNombreAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Jose"
+                android:textColor="#ffff"
+                android:textSize="24dp" />
 
             <TextView
                 android:id="@+id/textViewTantoPorCiento"
@@ -392,13 +393,13 @@
     <Button
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/btn_cerrar_admin"
+        android:text="@string/textLogOut"
+        android:textColor="#ffff"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/btn_cerrar_admin"
-        android:text="Cerrar Sesión"
-        android:textColor="#ffff"
-        android:textSize="16sp"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
