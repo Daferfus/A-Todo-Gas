@@ -14,7 +14,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +34,9 @@ import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
 import com.example.daferfus_upv.btle.AcercaDe.InstruccionesActivity;
+import com.example.daferfus_upv.btle.BD.ComprobadorEstadoRed;
 import com.example.daferfus_upv.btle.ConstantesAplicacion;
+import com.example.daferfus_upv.btle.Logros;
 import com.example.daferfus_upv.btle.PaginaGraficas;
 import com.example.daferfus_upv.btle.Perfil;
 import com.example.daferfus_upv.btle.R;
@@ -45,6 +49,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 // ------------------------------------------------------------------
 
 public class MainActivity extends AppCompatActivity {
+    public static final String BROADCAST_DATOS_GUARDADOS = "com.example.daferfus_upv.btle";
 
     // ------------------------------------------------------------------
     // Concesión de Permisos
@@ -143,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Se comprueba el estado de la red para meter en el servidor los datos no sincronizados.
-        //registerReceiver(new ComprobadorEstadoRed(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        registerReceiver(new ComprobadorEstadoRed(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         // Se comprueban los permisos de geolocalización.
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.
@@ -163,7 +168,8 @@ public class MainActivity extends AppCompatActivity {
                 .enqueue(medicionesWorkRequest);
         textViewUsuario= findViewById(R.id.textViewMostrarUsuario);
         mostrarUsuario();
-        
+
+
 
 //      MENU FLOTANTE
         final FloatingActionsMenu menuBotones = (FloatingActionsMenu) findViewById(R.id.grupofab);
@@ -237,13 +243,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-//      CARDVIEW LOGROS
-        CardView cardViewLogros = findViewById(R.id.cardViewLogros);
+//     CARDVIEW LOGROS
+        CardView cardViewLogros = findViewById(R.id.cardViewLogros); // creating a CardView and assigning a value.
 
         cardViewLogros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarToast("Logros");
+                Intent i = new Intent(getApplicationContext(), Logros.class);
+                i.putExtra("Usuario", envioDatosEntreActividades());
+                startActivity(i);
             }
         });
 //      CARDVIEW CONSEJOS

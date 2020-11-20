@@ -48,10 +48,19 @@
         <activity android:name=".Activities.AdminActivity"
             android:screenOrientation="portrait"
             tools:ignore="Instantiatable" />
+        <activity android:name=".Logros"
+            android:screenOrientation="portrait"
+            tools:ignore="Instantiatable" />
 
         <activity android:name=".Activities.MainActivity"
             android:label="@string/app_name"></activity>
 
+
+        <receiver android:name=".BD.ComprobadorEstadoRed">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

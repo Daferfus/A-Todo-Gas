@@ -18,7 +18,6 @@ import androidx.work.WorkRequest;
 import com.example.daferfus_upv.btle.Activities.MainActivity;
 import com.example.daferfus_upv.btle.MyApplication;
 import com.example.daferfus_upv.btle.R;
-import com.example.daferfus_upv.btle.Workers.ComprobadorEstadoRedWorker;
 import com.example.daferfus_upv.btle.Workers.MantenimientoDeMedidasWorker;
 import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 
@@ -76,19 +75,6 @@ public class TratamientoDeLecturas {
                         .getInstance()
                         .enqueue(envioMedicionWorkRequest);
             }
-
-                    /*Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.UNMETERED)
-                .build();*/
-
-            WorkRequest myWorkRequest =
-                    new OneTimeWorkRequest.Builder(ComprobadorEstadoRedWorker.class)
-                            //.setConstraints(constraints)
-                            .build();
-            WorkManager
-                    .getInstance()
-                    .enqueue(myWorkRequest);
-
         } // if()
     } // ()
 

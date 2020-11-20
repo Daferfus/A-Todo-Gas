@@ -39,7 +39,7 @@ import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.UB
 // ------------------------------------------------------------------
 
 
-public class Logica extends SQLiteOpenHelper {
+public class LecturasDbHelper extends SQLiteOpenHelper {
 
 
     // ------------------------------------------------------------------
@@ -64,7 +64,7 @@ public class Logica extends SQLiteOpenHelper {
     // Invocado desde: MainActivity
     // Función: Inicializa y configura la base de datos.
     // --------------------------------------------------------------
-    public Logica(Context contexto) {
+    public LecturasDbHelper(Context contexto) {
         super(contexto, NOMBRE_BD, null, VERSION_BD);
 
         // Se coge la ruta dentro del móvil donde se copiara la base datos...
@@ -252,9 +252,9 @@ public class Logica extends SQLiteOpenHelper {
     // Invocado desde: MainActivity::cargarLecturas()
     // Función: Nos da todas las lecturas almacenadas en SQLite.
     // ---------------------------------------------------------------------------------------------
-    public Cursor getLectura(String momento, String ubicacion) {
+    public Cursor getLecturas() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM Lecturas WHERE momento = '" + momento + "' AND ubicacion = '" + ubicacion + "' ORDER BY momento ASC;";
+        String sql = "SELECT * FROM Lecturas ORDER BY momento ASC;";
         return db.rawQuery(sql, null);
     }
 
