@@ -14,9 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +32,6 @@ import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
 import com.example.daferfus_upv.btle.AcercaDe.InstruccionesActivity;
-import com.example.daferfus_upv.btle.BD.ComprobadorEstadoRed;
 import com.example.daferfus_upv.btle.ConstantesAplicacion;
 import com.example.daferfus_upv.btle.PaginaGraficas;
 import com.example.daferfus_upv.btle.Perfil;
@@ -48,7 +45,6 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 // ------------------------------------------------------------------
 
 public class MainActivity extends AppCompatActivity {
-    public static final String BROADCAST_DATOS_GUARDADOS = "com.example.daferfus_upv.btle";
 
     // ------------------------------------------------------------------
     // Concesión de Permisos
@@ -147,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Se comprueba el estado de la red para meter en el servidor los datos no sincronizados.
-        registerReceiver(new ComprobadorEstadoRed(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        //registerReceiver(new ComprobadorEstadoRed(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         // Se comprueban los permisos de geolocalización.
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.
@@ -167,8 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 .enqueue(medicionesWorkRequest);
         textViewUsuario= findViewById(R.id.textViewMostrarUsuario);
         mostrarUsuario();
-
-
+        
 
 //      MENU FLOTANTE
         final FloatingActionsMenu menuBotones = (FloatingActionsMenu) findViewById(R.id.grupofab);
@@ -222,17 +217,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //      CARDVIEW RECORRIDO
-        CardView cardViewRecorrido = findViewById(R.id.cardViewRecorrido); // creating a CardView and assigning a value.
+        CardView cardViewRecorrido = findViewById(R.id.cardViewRecorrido); //Creamos cardview y le asignamos un valor
 
         cardViewRecorrido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // do whatever you want to do on click (to launch any fragment or activity you need to put intent here.)
+                //Ponemos lo que queremos que se lance al pulsar el Cardview
                 mostrarToast("Recorrido");
             }
         });
 //      CARDVIEW MEDICIONES
-        CardView cardViewMediciones = findViewById(R.id.cardViewMediciones); // creating a CardView and assigning a value.
+        CardView cardViewMediciones = findViewById(R.id.cardViewMediciones);
 
         cardViewMediciones.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,33 +235,26 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), PaginaGraficas.class);
                 i.putExtra("Usuario", envioDatosEntreActividades());
                 startActivity(i);
-                // do whatever you want to do on click (to launch any fragment or activity you need to put intent here.)
             }
         });
 //      CARDVIEW LOGROS
-        CardView cardViewLogros = findViewById(R.id.cardViewLogros); // creating a CardView and assigning a value.
+        CardView cardViewLogros = findViewById(R.id.cardViewLogros);
 
         cardViewLogros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // do whatever you want to do on click (to launch any fragment or activity you need to put intent here.)
                 mostrarToast("Logros");
             }
         });
 //      CARDVIEW CONSEJOS
-        CardView cardViewConsejos = findViewById(R.id.cardViewConsejos); // creating a CardView and assigning a value.
+        CardView cardViewConsejos = findViewById(R.id.cardViewConsejos);
 
         cardViewConsejos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // do whatever you want to do on click (to launch any fragment or activity you need to put intent here.)
                 mostrarToast("Consejos");
             }
         });
-
-//  Mostramos el valor del minor en su sitio correspondiente
-        //TratamientoDeLecturas valorSO2 = new TratamientoDeLecturas();
-        //textViewvalorSO2.setText(valorSO2.getValorSO2().toString());
 
     } // onCreate()
 
@@ -281,6 +269,13 @@ public void mostrarUsuario(){
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
 
+    // --------------------------------------------------------------
+    //              envioDatosEntreActividades() ->
+    //              -> String
+    //
+    // Invocado desde: CardViews
+    // Función: Envia datos del usuario entre actividades.
+    // --------------------------------------------------------------
     public String envioDatosEntreActividades(){
         Bundle datos = this.getIntent().getExtras();
         String variable_string = datos.getString("Usuario");

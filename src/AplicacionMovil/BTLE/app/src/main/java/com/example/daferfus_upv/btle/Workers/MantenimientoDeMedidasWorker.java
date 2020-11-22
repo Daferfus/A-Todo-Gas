@@ -16,6 +16,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -25,7 +28,10 @@ import com.example.daferfus_upv.btle.MyApplication;
 import com.example.daferfus_upv.btle.Utilidades.TratamientoDeLecturas;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.MOMENTO;
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.UBICACION;
@@ -76,35 +82,23 @@ public class MantenimientoDeMedidasWorker extends Worker {
 
         Log.d("BDWorker", "Enviando Medición");
         String idMagnitud = "SO2";
-        String momento = new Date().toString();
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+
+        String momento =  dtf.format(now);
         int estadoSincronizacionServidor = 1;
 
-        Cursor lectura = mDBHelper.getLectura(momento, ubicacion);
-        int datoExistente = lectura.getCount();
-        Log.d("BDWorker", "Ubicación: " + ubicacion);
+        boolean datoExistente = mDBHelper.getLectura(momento, ubicacion);
 
-        if (lectura.moveToFirst()) {
-            do {
-                lectura.getString(lectura.getColumnIndex(MOMENTO));
-                lectura.getString(lectura.getColumnIndex(UBICACION));
-                Log.d("BDWorker", "Lectura ya insertada: " + lectura.getCount());
-                Log.d("BDWorker", "Ubicación actual: " + ubicacion);
-                Log.d("BDWorker", "Ubicación repetida: " + lectura.getString(lectura.getColumnIndex(UBICACION)));
-                Log.d("BDWorker", "Momento actual: " +  momento);
-                Log.d("BDWorker", "Momento repetido: " +  lectura.getString(lectura.getColumnIndex(MOMENTO)));
-            }
-            while (lectura.moveToNext()); // do while()
-        } // if()
-        else{
-            if(!TextUtils.isEmpty(ubicacion) && datoExistente == 0){
-                mDBHelper.guardarLecturaEnServidor(new Lectura(momento, ubicacion, valor, idMagnitud, estadoSincronizacionServidor), MyApplication.getAppContext(), mDb);
+            if(!TextUtils.isEmpty(ubicacion) && !datoExistente){
+                mDBHelper.guardarLecturaEnServidor(new Lectura(momento, ubicacion, valor, idMagnitud, estadoSincronizacionServidor), MyApplication.getAppContext());
             }
             else{
                 Log.d("BDWorker", "Ubicación nula");
             }
-        }
-        mDBHelper.borrarLecturasSincronizadas();
 
+        mDBHelper.borrarLecturasSincronizadas();
         return Result.success();
     } // ()
 

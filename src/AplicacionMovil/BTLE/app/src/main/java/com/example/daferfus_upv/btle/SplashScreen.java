@@ -31,7 +31,7 @@ public class SplashScreen extends AppCompatActivity {
         animArriba = AnimationUtils.loadAnimation(this, R.anim.arriba_splash_anim);
         animAbajo = AnimationUtils.loadAnimation(this, R.anim.abajo_splash_anim);
 
-        //Hooks
+        //Asignación
         imagen = findViewById(R.id.imagenSplash);
         eslogan = findViewById(R.id.textViewSplash);
 

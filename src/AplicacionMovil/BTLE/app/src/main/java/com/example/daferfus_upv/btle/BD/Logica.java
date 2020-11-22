@@ -14,10 +14,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import androidx.work.ListenableWorker;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.example.daferfus_upv.btle.ConstantesAplicacion;
+import com.example.daferfus_upv.btle.Workers.ComprobadorEstadoRedWorker;
+import com.example.daferfus_upv.btle.Workers.MantenimientoDeMedidasWorker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,13 +31,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.ESTADO_SINCRONIZACION_SERVIDOR;
+import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.ID_MAGNITUD;
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.MOMENTO;
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.TABLE_NAME;
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.UBICACION;
+import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.VALOR;
+import static com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker.ubicacion;
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
@@ -48,7 +56,7 @@ public class Logica extends SQLiteOpenHelper {
     private static final String NOMBRE_BD = "Lecturas.db";
     private static String RUTA_BD = "";
     private static final int VERSION_BD = 1;
-
+    private static Logica mInstance = null;
     // ------------------------------------------------------------------
     // Configuración de la Base de Datos
     // ------------------------------------------------------------------
@@ -61,7 +69,8 @@ public class Logica extends SQLiteOpenHelper {
     //                  constructor() <-
     //                  <- Context
     //
-    // Invocado desde: MainActivity
+    // Invocado desde: ComprobadorEstadoRedWorker:constructor()
+    //                 MantenimientoDeMedidasWorker:constructor()
     // Función: Inicializa y configura la base de datos.
     // --------------------------------------------------------------
     public Logica(Context contexto) {
@@ -78,7 +87,6 @@ public class Logica extends SQLiteOpenHelper {
         // ...y se la hace legible mediante consulta.
         this.getReadableDatabase();
     } // ()
-
 
     // ----------------------------------------------------------------------------------------
     //                  actualizarBaseDatos() ->
@@ -203,21 +211,30 @@ public class Logica extends SQLiteOpenHelper {
     // Invocado desde: MainActivity::enviarMedicion()
     // Función: Inserta una lectura del sensor en la tabla Lecturas en la base de datos del servidor.
     // ---------------------------------------------------------------------------------------------
-    public void guardarLecturaEnServidor(Lectura lectura, Context contexto, SQLiteDatabase db) {
+    public void guardarLecturaEnServidor(Lectura lectura, Context contexto) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, ConstantesAplicacion.URL_GUARDADO_LECTURAS,
                 response -> {
                     try {
+                        SQLiteDatabase db = this.getWritableDatabase();
                         JSONObject obj = new JSONObject(response);
                         // En caso de tener éxito...
                         if (!obj.getBoolean("error")) {
                             // ...almacena la lectura en SQLite con estado sincronizado.
+                            db.beginTransaction();
                             long numeroLectura = guardarLecturaEnLocal(db, lectura, ConstantesAplicacion.LECTURA_SINCRONIZADA_CON_SERVIDOR);
+                            db.setTransactionSuccessful();
+                            db.endTransaction();
+                            db.close();
                             Log.d("LecturasDbHelper", "Lectura número " + numeroLectura + " almacenada");
                             // En caso de error...
                         } else {
                             // ...guarda la lectura en SQLite con estado no sincronizado.
                             Log.d("LecturasDbHelper", "Error devuelto por el servidor: " + obj.getBoolean("error"));
+                            db.beginTransaction();
                             long numeroLectura = guardarLecturaEnLocal(db, lectura, ConstantesAplicacion.LECTURA_NO_SINCRONIZADA_CON_SERVIDOR);
+                            db.setTransactionSuccessful();
+                            db.endTransaction();
+                            db.close();
                             Log.d("LecturasDbHelper", "Lectura número " + numeroLectura + " almacenada");
                         }
                     } catch (JSONException e) {
@@ -227,9 +244,14 @@ public class Logica extends SQLiteOpenHelper {
                 // En caso de no recibir respuesta del servidor almacenar la lectura en SQLite
                 // con estado no sincronizado.
                 error -> {
+                    SQLiteDatabase db = this.getWritableDatabase();
+                    db.beginTransaction();
                     Log.d("LecturasDbHelper", "No se ha podido contactar con el servidor:" + error);
                     long numeroLectura = guardarLecturaEnLocal(db, lectura, ConstantesAplicacion.LECTURA_NO_SINCRONIZADA_CON_SERVIDOR);
                     Log.d("LecturasDbHelper", "Lectura número " + numeroLectura + " almacenada");
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                    db.close();
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -252,10 +274,22 @@ public class Logica extends SQLiteOpenHelper {
     // Invocado desde: MainActivity::cargarLecturas()
     // Función: Nos da todas las lecturas almacenadas en SQLite.
     // ---------------------------------------------------------------------------------------------
-    public Cursor getLectura(String momento, String ubicacion) {
+    public boolean getLectura(String momento, String ubicacion) {
         SQLiteDatabase db = this.getReadableDatabase();
+        db.beginTransaction();
         String sql = "SELECT * FROM Lecturas WHERE momento = '" + momento + "' AND ubicacion = '" + ubicacion + "' ORDER BY momento ASC;";
-        return db.rawQuery(sql, null);
+        Cursor lecturas = db.rawQuery(sql, null);
+        int datoExistente = lecturas.getCount();
+        lecturas.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        if (datoExistente > 0){
+            return true;
+        }
+        else{
+            return  false;
+        }
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -265,10 +299,32 @@ public class Logica extends SQLiteOpenHelper {
     // Invocado desde: ComprobadorEstadoRed::onReceive()
     // Función: Nos da todas las lecturas que no se encuentran en la base de datos del servidor.
     // ---------------------------------------------------------------------------------------------
-    public Cursor getLecurasNoSincronizadas() {
+    public ArrayList<Lectura> getLecurasNoSincronizadas() {
         SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Lectura> lecturas = new ArrayList<Lectura>();
+        db.beginTransaction();
         String sql = "SELECT * FROM lecturas  WHERE estadoSincronizacionServidor = 0;";
-        return db.rawQuery(sql, null);
+        Cursor lecturasNoSincronizadas = db.rawQuery(sql, null);
+
+        if (lecturasNoSincronizadas.moveToFirst()) {
+            Log.d("ComprobadorEstadoRedWorker", "Hay datos");
+            do {
+                // ...se llama a la función para guardar la lectura no sincronizada a MySQL.
+                Lectura lectura = new Lectura(lecturasNoSincronizadas.getString(lecturasNoSincronizadas.getColumnIndex(MOMENTO)),
+                        lecturasNoSincronizadas.getString(lecturasNoSincronizadas.getColumnIndex(UBICACION)),
+                        lecturasNoSincronizadas.getInt(lecturasNoSincronizadas.getColumnIndex(VALOR)),
+                        lecturasNoSincronizadas.getString(lecturasNoSincronizadas.getColumnIndex(ID_MAGNITUD)),
+                        lecturasNoSincronizadas.getInt(lecturasNoSincronizadas.getColumnIndex(ESTADO_SINCRONIZACION_SERVIDOR)));
+
+                lecturas.add(lectura);
+            } while (lecturasNoSincronizadas.moveToNext()); // do while()
+            Log.d("Logica", "Éxito");
+        } // if()
+        lecturasNoSincronizadas.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        return lecturas;
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -279,11 +335,15 @@ public class Logica extends SQLiteOpenHelper {
     // ---------------------------------------------------------------------------------------------
     public void borrarLecturasSincronizadas() {
         SQLiteDatabase db = this.getReadableDatabase();
+        db.beginTransaction();
         db.execSQL("DELETE FROM Lecturas WHERE estadoSincronizacionServidor = 1");
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
     }
 
     // ---------------------------------------------------------------------------------------------
-    //                  -> Cursor
+    //                  -> Buleano
     //                  actualizarEstadoDeSincronizacionLectura() ->
     //                  <-2 Textos, N
     //
@@ -293,6 +353,7 @@ public class Logica extends SQLiteOpenHelper {
     // ---------------------------------------------------------------------------------------------
     public boolean actualizarEstadoDeSincronizacionLectura(String momento, String ubicacion, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
         ContentValues contentValues = new ContentValues();
         contentValues.put(ESTADO_SINCRONIZACION_SERVIDOR, status);
         Log.d("Base de Datos", "Actualizando estado de sincronización");
@@ -301,7 +362,9 @@ public class Logica extends SQLiteOpenHelper {
         // near "Oct": syntax error (code 1 SQLITE_ERROR): , while compiling: UPDATE Lecturas SET estadoSincronizacionServidor=1 WHERE momento=Fri Oct 23 07:14:46 GMT+02:00 2020 AND ubicacion=38.9735361 - -0.1801669
 
         // Esta sentencia consigue los mismos efectos pero de una forma más chapucera y muy generalista.
-        db.execSQL("UPDATE " + TABLE_NAME + " SET " + contentValues + " WHERE " + ESTADO_SINCRONIZACION_SERVIDOR + "=" + 0);
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + contentValues + " WHERE " + MOMENTO + "='" + momento + "' AND " + UBICACION + "=" + ubicacion);
+        db.setTransactionSuccessful();
+        db.endTransaction();
         db.close();
         return true;
     }
