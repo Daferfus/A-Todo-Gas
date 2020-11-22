@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:padding="6dp"
     tools:context=".Activities.MainActivity"
     android:background="@color/colorOscuro">
 
@@ -43,7 +44,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
             android:gravity="center"
-            android:text="MEDICIONES"
+            android:text="@string/textMedicionesMayus"
             android:textColor="@color/colorBlanco"
             android:textSize="24dp" />
 

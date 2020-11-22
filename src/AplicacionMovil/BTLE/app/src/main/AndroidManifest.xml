@@ -51,6 +51,12 @@
         <activity android:name=".Logros"
             android:screenOrientation="portrait"
             tools:ignore="Instantiatable" />
+        <activity android:name=".Consejos"
+            android:screenOrientation="portrait"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".Recorrido"
+            android:screenOrientation="portrait"
+            tools:ignore="Instantiatable" />
 
         <activity android:name=".Activities.MainActivity"
             android:label="@string/app_name"></activity>

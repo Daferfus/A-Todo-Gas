@@ -42,13 +42,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.github.lecho:hellocharts-android:v1.5.8'
-
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     //glide
-    implementation 'com.github.bumptech.glide:glide:4.4.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
 
     //circle imageview
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
-    implementation 'com.android.support:multidex:1.0.0'
 }

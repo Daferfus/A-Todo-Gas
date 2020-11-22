@@ -123,7 +123,6 @@ public class Logros extends AppCompatActivity {
     }
 
 
-
     public String envioDatosEntreActividades(){
         Bundle datos = this.getIntent().getExtras();
         String variable_string = datos.getString("Usuario");

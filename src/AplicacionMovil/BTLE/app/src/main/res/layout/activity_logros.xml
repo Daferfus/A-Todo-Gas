@@ -4,13 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:padding="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <LinearLayout
@@ -20,10 +25,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:elevation="2dp"
+            android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:gravity="center">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/atrasBoton"
@@ -35,12 +40,12 @@
         </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
 
@@ -48,16 +53,16 @@
                     android:id="@+id/linearLayout4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center"
-                    android:layout_marginBottom="10dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_bold"
-                        android:text="LOGROS"
                         android:gravity="center"
+                        android:text="@string/textLogrosMayus"
                         android:textColor="@color/colorBlanco"
                         android:textSize="24dp" />
 
@@ -81,12 +86,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:background="@drawable/card1"
-                            android:elevation="8dp"
+                            android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_margin="10dp"
-                            android:layout_width="60dp">
+                            android:background="@drawable/card1"
+                            android:elevation="8dp">
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -102,12 +108,12 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <TextView
-                            android:gravity="center_horizontal"
-                            android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:text="Pasos"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/textPasos"
                             android:textAlignment="center"
-                            android:textColor="#fff"/>
+                            android:textColor="#fff" />
 
                     </LinearLayout>
 
@@ -116,18 +122,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:background="@drawable/card1"
-                            android:elevation="8dp"
+                            android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_margin="10dp"
-                            android:layout_width="60dp">
+                            android:background="@drawable/card1"
+                            android:elevation="8dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:padding="5dp"
                                 android:layout_centerInParent="true"
+                                android:padding="5dp"
                                 android:src="@drawable/gases"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -137,12 +144,12 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <TextView
-                            android:gravity="center_horizontal"
-                            android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:text="Gases"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/textGases"
                             android:textAlignment="center"
-                            android:textColor="#fff"/>
+                            android:textColor="#fff" />
 
                     </LinearLayout>
 
@@ -150,12 +157,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:background="@drawable/card1"
-                            android:elevation="8dp"
+                            android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_margin="10dp"
-                            android:layout_width="60dp">
+                            android:background="@drawable/card1"
+                            android:elevation="8dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -170,12 +178,12 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <TextView
-                            android:gravity="center_horizontal"
-                            android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:text="Amigos"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/textAmigos"
                             android:textAlignment="center"
-                            android:textColor="#fff"/>
+                            android:textColor="#fff" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -190,9 +198,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="En Proceso:"
                         android:font="@font/roboto_bold"
-                        android:textColor="@color/colorDorado"/>
+                        android:text="@string/textProceso"
+                        android:textColor="@color/colorDorado" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -229,12 +238,14 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Por Hacer:"
                         android:font="@font/roboto_bold"
-                        android:textColor="@color/colorDorado"/>
+                        android:text="@string/textHacer"
+                        android:textColor="@color/colorDorado" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -275,9 +286,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Conseguido:"
                         android:font="@font/roboto_bold"
-                        android:textColor="@color/colorDorado"/>
+                        android:text="@string/textConseguido"
+                        android:textColor="@color/colorDorado" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -321,8 +333,6 @@
 
 
         </androidx.core.widget.NestedScrollView>
-
-
 
 
     </LinearLayout>

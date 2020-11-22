@@ -35,11 +35,13 @@ import androidx.work.WorkRequest;
 
 import com.example.daferfus_upv.btle.AcercaDe.InstruccionesActivity;
 import com.example.daferfus_upv.btle.BD.ComprobadorEstadoRed;
+import com.example.daferfus_upv.btle.Consejos;
 import com.example.daferfus_upv.btle.ConstantesAplicacion;
 import com.example.daferfus_upv.btle.Logros;
 import com.example.daferfus_upv.btle.PaginaGraficas;
 import com.example.daferfus_upv.btle.Perfil;
 import com.example.daferfus_upv.btle.R;
+import com.example.daferfus_upv.btle.Recorrido;
 import com.example.daferfus_upv.btle.Workers.EscaneadoWorker;
 import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -228,8 +230,9 @@ public class MainActivity extends AppCompatActivity {
         cardViewRecorrido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Ponemos lo que queremos que se lance al pulsar el Cardview
-                mostrarToast("Recorrido");
+                Intent i = new Intent(getApplicationContext(), Recorrido.class);
+                i.putExtra("Usuario", envioDatosEntreActividades());
+                startActivity(i);
             }
         });
 //      CARDVIEW MEDICIONES
@@ -260,7 +263,9 @@ public class MainActivity extends AppCompatActivity {
         cardViewConsejos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarToast("Consejos");
+                Intent i = new Intent(getApplicationContext(), Consejos.class);
+                i.putExtra("Usuario", envioDatosEntreActividades());
+                startActivity(i);
             }
         });
 

@@ -47,8 +47,40 @@
 
     <!-- PERFIL -->
     <string name="textPasos">Pasos</string>
+    <string name="textPeso">Peso (kg)</string>
+    <string name="textAltura">Altura (cm)</string>
     <string name="textRanking">Ranking</string>
     <string name="textEditar">Editar</string>
+
+
+    <!-- LOGROS -->
+    <string name="textLogrosMayus">LOGROS</string>
+    <string name="textGases">Gases</string>
+    <string name="textAmigos">Amigos</string>
+    <string name="textProceso">En Proceso:</string>
+    <string name="textHacer">Por Hacer:</string>
+    <string name="textConseguido">Conseguido:</string>
+
+
+    <!-- RECORRIDO -->
+    <string name="textRecorridoMayus">RECORRIDO</string>
+    <string name="textDistanciaKm">Distancia Km</string>
+    <string name="textDistanciaPasos">Distancia Pasos</string>
+    <string name="textVmedia">Velocidad Media</string>
+    <string name="textDesnivel">Desnivel</string>
+    <string name="textKcal">Kcals Consumidas</string>
+    <string name="textGraficaPasos">Gráfica pasos, ajusta el periodo!</string>
+
+
+
+
+
+    <!-- MEDICIONES -->
+    <string name="textMedicionesMayus">MEDICIONES</string>
+
+
+    <!-- CONSEJOS -->
+    <string name="textConsejosMayus">CONSEJOS</string>
 
 
     <!-- INSTRUCCIONES -->
