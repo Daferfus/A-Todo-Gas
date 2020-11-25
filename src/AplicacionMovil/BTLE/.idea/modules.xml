@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BTLE.iml" filepath="$PROJECT_DIR$/.idea/modules/BTLE.iml" group="BTLE" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="BTLE/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hellocharts-library-1.5.8/hellocharts-library-1.5.8.iml" filepath="$PROJECT_DIR$/.idea/modules/hellocharts-library-1.5.8/hellocharts-library-1.5.8.iml" group="BTLE/hellocharts-library-1.5.8" />
+    </modules>
+  </component>
+</project>
