@@ -1,3 +1,0 @@
-Los git están dentro de las carpetas BTLE, HolaMundoIBeacon y Web.
-La base de datos local SQLite está dentro de "Proyecto BTLE/Aplicación Móvil/BTLE/app/src/main/assets/".
-La base de datos de la raiz es la empleada en el servidor.
