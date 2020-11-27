@@ -124,8 +124,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <ProgressBar
+                        android:id="@+id/progress_increase"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:progress="40"
+                        android:progressTint="@color/colorBlanco"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/mediaContaminacion"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
-                        android:id="@+id/textView7"
+                        android:id="@+id/mediaContaminacion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
@@ -482,5 +495,16 @@
 
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
-
+    <TextView
+        android:id="@+id/tvMostrarConsultas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:fontFamily="@font/roboto_medium"
+        android:text="mostrar las consultas"
+        android:textColor="#F6CD8F"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

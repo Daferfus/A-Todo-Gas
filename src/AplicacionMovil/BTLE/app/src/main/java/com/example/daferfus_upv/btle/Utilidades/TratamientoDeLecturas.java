@@ -11,6 +11,8 @@ package com.example.daferfus_upv.btle.Utilidades;
 import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
@@ -77,10 +79,10 @@ public class TratamientoDeLecturas {
                         .enqueue(envioMedicionWorkRequest);
             }
 
-                    /*Constraints constraints = new Constraints.Builder()
+             /*       Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.UNMETERED)
-                .build();*/
-
+                .build();
+*/
             WorkRequest myWorkRequest =
                     new OneTimeWorkRequest.Builder(ComprobadorEstadoRedWorker.class)
                             //.setConstraints(constraints)
@@ -88,7 +90,6 @@ public class TratamientoDeLecturas {
             WorkManager
                     .getInstance()
                     .enqueue(myWorkRequest);
-
         } // if()
     } // ()
 

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa</title>
+    
+    <!-- En el head siempre tenemos que cargar el link y el script para poder utilizar la librería del mapa --> 
+
+   <!-- Aqui cargamos el CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <!-- Aqui cargamos la libreria de heat -->
+    <script src="./build/heatmap.js"></script>
+    <script src="./plugins/leaflet-heatmap/leaflet-heatmap.js"></script>
+    
+    <style>
+        
+        #map {position: absolute; top: 0; bottom:0; left: 0; right: 0;}
+        
+        
+        /* css para cambiar los formatos del popup  */
+        .leaflet-popup-tip,
+        .leaflet-popup-content-wrapper {
+    background: #e93434;
+    color: #ffffff;
+}
+    </style>
+</head>
+<body>
+    <div id = "map"></div>
+    <script>
+        
+        //-----------------------------------------
+        //Cargar Mapa
+        //-----------------------------------------
+        
+        //aqui creamos el mapa y decimos donde se centra en grados decimales y el tamaño del zoom
+        //var map = L.map('map').setView([38.996622, -0.166156], 17);
+        
+        //aqui elegimos el tipo de mapa que queremos
+        
+        var urlMapaStreets = 'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=CWXeRcDd3XBvYbZUOleW';//url para poder utilizar OpenStreetMap del mapa en vision streets
+        
+        var urlMapBasic = 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=CWXeRcDd3XBvYbZUOleW';//esta es la url que hay que cargar si queremos el mapa basico
+        
+        var urlMapaSatelliteHybrid = 'https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=CWXeRcDd3XBvYbZUOleW';//esta es la url que hay que usar para cargar el mapa con vision de satelite
+        
+        var urlMapaTopo = 'https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=CWXeRcDd3XBvYbZUOleW';//esta es la url que hay que usar para cargar el mapa topografico
+        
+        /*L.tileLayer(urlMapaStreets, {
+            attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+        }).addTo(map);*/
+        
+        //-----------------------------------------
+        //-----------------------------------------
+        //Marcas y icono
+        //-----------------------------------------
+        
+        
+        //Aqui creamos nuestro icono que es el que podemos sustituir en el mapa
+        var myIcon = L.icon({
+            iconUrl: 'fabrica.png',//url de la imagen del icono
+            iconSize: [29, 29],//tamaño de la imagen del icono en pixeles
+            title: "Este es el titulo al pasar el raton por encima",
+            //iconAnchor: [95, 94],//coordenadas desde la "punta" de la esquina superior izquierda
+            popupAnchor: [-3, -76],//coordenadas del punto desde que abren las ventanas emergentes
+            //shadowUrl: 'fabrica.png',//la url de la imagen sombra del icono, si no se especifica no se crea ninguna sombra
+            //shadowSize: [68, 95],//tamaño de la imagen sombra del icono en pixeles
+            //shadowAnchor: [22, 94]//coordenadas desde la "punta" de la esquina superior iquierda
+        });
+        
+        //L.marker([38.996622, -0.166156], {icon: myIcon}).addTo(map);//Aqui cargamos una marca cambiandole el icono por uno que hemos creado nosotros anteriormente
+        
+        
+        
+        //crear icono cogiendo url de la web
+        
+        /*var Icono = L.icon({
+        iconUrl: "https://vivaelsoftwarelibre.com/wp-content/uploads/2020/05/icono.png",
+        iconSize: [30, 40],
+        iconAnchor: [15, 40],
+        shadowUrl: "https://vivaelsoftwarelibre.com/wp-content/uploads/2020/05/icono_sombra.png",
+        shadowSize: [35, 50],
+        shadowAnchor: [0, 55],
+        popupAnchor: [0, -40]});
+        
+        L.marker([38.996622, -0.166156], {icon: Icono}).addTo(map);//Aqui cargamos una marca cambiandole el icono por uno que hemos creado nosotros anteriormente*/
+        
+        
+        //Añadir marca con el popup abierto al cargar el mapa
+        
+        
+        /*
+        //añadir una marca con su información
+        L.marker([38.996622, -0.166156]).addTo(map)
+        //Aqui añade la información a la marca
+            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+        //el openPopup lo que haría es que se abriera tan punto cargue el mapa la información de la marca
+            //.openPopup();*/
+        
+        
+        //Marca con un popup cargando una imagen dentro de él
+        
+        //L.marker([38.996622, -0.166156]).addTo(map).bindPopup('<img alt="" src="icon.png"/><b>A pretty CSS3 popup.<br> Easily customizable.');//Añadir una marca con un icono dentro del popup
+        
+        //-----------------------------------------
+        //-----------------------------------------
+        //Pintar sobre el mapa con ubicaciones
+        //-----------------------------------------
+        
+        
+        //Circulo pintado a partir de una ubicación, un radio y decirle su color
+        
+        /*L.circle([38.996622, -0.166156],50, {
+            color : 'darkgreen',
+            fillColor: 'green',
+            fillOpacity: 0.3
+        }).addTo(map);//Esto es para pintar un circulo diciendole el centro y el radio en px*/
+        
+        
+        
+        //poligono que le dices esquinas y lo pinta del color que le decimos
+        
+        /*L.polygon([[38.996622, -0.166156],[39, -0.16],[38.996622, -0.165]],
+                    { 
+            color : 'darkgreen',
+            fillColor: 'green',
+            fillOpacity: 0.3
+        }).addTo(map);//Este metodo es para pintar sobre el mapa diciendole los puntos de las esquinas del poligono*/
+        
+        //-----------------------------------------
+        //-----------------------------------------
+        //Mapa de calor
+        //-----------------------------------------
+        
+        window.onload = function() {
+
+        var testData = {
+          max: 8,
+          data: [{lat: 38.996622, lng:-0.166156, count: 1},{lat: 38.9976738, lng:-0.1639319, count: 3},{lat: 39.000028, lng:-0.160959, count: 5},{lat: 39.0029207, lng:-0.188148, count: 3}]
+        };
+
+        var baseLayer = L.tileLayer(urlMapaStreets, {
+            attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+            maxZoom: 18
+          }
+        );
+
+        var cfg = {
+          // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+          "radius": 0.0025,
+          "maxOpacity": .8, 
+          // scales the radius based on map zoom
+          "scaleRadius": true, 
+          // if set to false the heatmap uses the global maximum for colorization
+          // if activated: uses the data maximum within the current map boundaries 
+          //   (there will always be a red spot with useLocalExtremas true)
+          "useLocalExtrema": true,
+          // which field name in your data represents the latitude - default "lat"
+          latField: 'lat',
+          // which field name in your data represents the longitude - default "lng"
+          lngField: 'lng',
+          // which field name in your data represents the data value - default "value"
+          valueField: 'count'
+        };
+
+
+        var heatmapLayer = new HeatmapOverlay(cfg);
+
+        var map = new L.Map('map', {
+          center: new L.LatLng(38.996622, -0.166156),
+          zoom: 15,
+          layers: [baseLayer, heatmapLayer],
+          urlMapaStreets
+        });
+
+        heatmapLayer.setData(testData);
+      };
+        
+        
+        
+
+    </script>
+    
+</body>
+</html>

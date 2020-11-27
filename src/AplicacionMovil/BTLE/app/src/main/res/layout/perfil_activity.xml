@@ -18,28 +18,22 @@
 
         <LinearLayout
             android:id="@+id/linearAtras"
-            android:layout_width="70dp"
+            android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:elevation="2dp"
+            android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:gravity="center">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/atrasBoton"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:src="@drawable/flecha_atras" />
 
-            <ImageView
-                android:id="@+id/panelBoton"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/dashboard"
-                android:layout_marginLeft="8dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -100,14 +94,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/textPasos"
+                        android:text="@string/textAltura"
                         android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
-                        android:text="2340"
+                        android:text="173"
                         android:textColor="@color/colorDorado"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -124,7 +118,7 @@
                     <TextView
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/textContaminacion"
+                        android:text="@string/textPeso"
                         android:textAlignment="center"
                         android:textSize="16sp" />
 
@@ -132,7 +126,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
-                        android:text="20%"
+                        android:text="80"
                         android:textColor="@color/colorDorado"
                         android:textSize="20sp"
                         android:textStyle="bold" />

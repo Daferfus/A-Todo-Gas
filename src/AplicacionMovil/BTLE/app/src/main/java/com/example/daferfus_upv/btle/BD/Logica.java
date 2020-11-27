@@ -17,11 +17,19 @@ import android.util.Log;
 import androidx.work.ListenableWorker;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.daferfus_upv.btle.Activities.MainActivity;
 import com.example.daferfus_upv.btle.ConstantesAplicacion;
+import com.example.daferfus_upv.btle.MyApplication;
 import com.example.daferfus_upv.btle.Workers.ComprobadorEstadoRedWorker;
 import com.example.daferfus_upv.btle.Workers.MantenimientoDeMedidasWorker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.SphericalUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,8 +39,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.ESTADO_SINCRONIZACION_SERVIDOR;
@@ -266,7 +277,238 @@ public class Logica extends SQLiteOpenHelper {
         VolleySingleton.tomarInstancia(contexto).anyadirAColaPeticiones(stringRequest);
     }
 
+    // ---------------------------------------------------------------------------------------------
+    //                  consultarMedia() -> N
+    //                  <- URL, fecha
+    //
+    // Invocado desde: MainActivity
+    // Función: Obtiene la media de un usuario en un dia
+    // ---------------------------------------------------------------------------------------------
+    public void consultarMedia(String URL, String fecha){
+        //declara una peticion
+        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, URL+"?dia="+fecha+"&idUsuario="+ConstantesAplicacion.ID_USUARIO, null, response -> {
+            int res = 1;
+            try {
+                res=response.getInt("valor");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.e("hola", response.toString());
 
+            ConstantesAplicacion.MEDIA = res;
+
+        }, error ->  ConstantesAplicacion.MEDIA=0)
+        {
+
+        };
+
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //procesar la peticiones hechas por nuestra app
+
+
+        VolleySingleton.tomarInstancia(MyApplication.getAppContext()).anyadirAColaPeticiones(stringRequest);
+        MainActivity.valorMedia.setText(ConstantesAplicacion.MEDIA +"%");
+        MainActivity.porcentajeCont.setProgress(ConstantesAplicacion.MEDIA);
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    //                  consultarDistancia() -> N
+    //                  <- URL, fecha
+    //
+    // Invocado desde:
+    // Función: Obtiene la distancia de un usuario en un dia
+    // ---------------------------------------------------------------------------------------------
+    public void consultarDistancia(String URL, String fecha){
+        //declara una peticion
+        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, URL+"?idUsuario="+ConstantesAplicacion.ID_USUARIO+"&dia="+fecha, null, response -> {
+
+            int res = 1;
+            try {
+                res=response.getInt("distancia");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.e("hola", response.toString());
+
+            ConstantesAplicacion.DISTANCIA = res;
+            Log.e("hola", String.valueOf(ConstantesAplicacion.DISTANCIA));
+
+        }, error -> ConstantesAplicacion.DISTANCIA=-1)
+        { };
+
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //procesar la peticiones hechas por nuestra app
+
+
+        VolleySingleton.tomarInstancia(MyApplication.getAppContext()).anyadirAColaPeticiones(stringRequest);
+
+    }
+    // ---------------------------------------------------------------------------------------------
+    //                  consultarPasos() -> N
+    //                  <- URL, fecha
+    //
+    // Invocado desde:
+    // Función: Obtiene la distancia de un usuario en un dia
+    // ---------------------------------------------------------------------------------------------
+    public void consultarPasos(String URL, String fecha){
+        //declara una peticion
+        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, URL+"?idUsuario="+ConstantesAplicacion.ID_USUARIO+"&dia="+fecha, null, response -> {
+
+            int res = 1;
+            try {
+                res=response.getInt("pasos");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.e("hola", response.toString());
+
+            ConstantesAplicacion.PASOS = res;
+            Log.e("hola", String.valueOf(ConstantesAplicacion.PASOS));
+
+        }, error -> Log.e("hola", "no hay pasos"))
+        { };
+
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //procesar la peticiones hechas por nuestra app
+
+
+        VolleySingleton.tomarInstancia(MyApplication.getAppContext()).anyadirAColaPeticiones(stringRequest);
+
+    }
+    // ---------------------------------------------------------------------------------------------
+    //                  getFecha() -> Texto
+    //                  <-
+    //
+    // Invocado desde: Cualquier método de consulta que necesite la fecha
+    // Función: Obtiene la fecha actual
+    // ---------------------------------------------------------------------------------------------
+    public String getFecha(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime now = LocalDateTime.now();
+        //enviar los parametros ()
+        return dtf.format(now);
+    }
+    // ---------------------------------------------------------------------------------------------
+    //                  distancia() -> R
+    //                  <- LatLng, LatLng
+    //
+    // Invocado desde: subirDistanciaYPasos()
+    // Función: Calcula la distancia entre dos puntos
+    // ---------------------------------------------------------------------------------------------
+
+    public static Double distancia(LatLng point1, LatLng point2) {
+        if (point1 == null || point2 == null) {
+            return null;
+        }
+
+        return SphericalUtil.computeDistanceBetween(point1, point2);
+    }
+    // ---------------------------------------------------------------------------------------------
+    //                  pasos() -> N
+    //                  <- R
+    //
+    // Invocado desde: subirDistanciaYPasos()
+    // Función: Calcula los pasos dados por un usuario para cierta distancia
+    // ---------------------------------------------------------------------------------------------
+
+    public static int pasos(double distancia) {
+        int res = (int) Math.round(distancia/0.74);
+        return res;
+    }
+    // ---------------------------------------------------------------------------------------------
+    //                  iniciarDistancia() ->
+    //                  <-
+    //
+    // Invocado desde: GeolocalizacionWorker
+    // Función: Comprueba si ya existe una medida de la distancia recorrida, en caso negativo la crea
+    // ---------------------------------------------------------------------------------------------
+    public void iniciarDistancia(){
+        if(ConstantesAplicacion.DISTANCIA==-1){
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, ConstantesAplicacion.URL_GUARDADO_DISTANCIA, response -> {
+
+            }, error -> Log.e("hola", error.toString()))
+            {
+                //indicar los parametros que vamos a enviar
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> parametros = new LinkedHashMap<>();
+                    //enviar los parametros ()
+                    parametros.put("idUsuario", ConstantesAplicacion.ID_USUARIO);
+                    parametros.put("dia", getFecha());
+                    parametros.put("distancia", String.valueOf(0));
+                    parametros.put("pasos", String.valueOf(0));
+                    return parametros;
+                }
+            };
+
+
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            //procesar la peticiones hechas por nuestra app
+
+
+            VolleySingleton.tomarInstancia(MyApplication.getAppContext()).anyadirAColaPeticiones(stringRequest);
+            consultarDistancia(ConstantesAplicacion.URL_CONSULTA_DISTANCIA, getFecha());
+        }
+
+    }
+    // ---------------------------------------------------------------------------------------------
+    //                  subirDistanciaYPasos() ->
+    //                  <-
+    //
+    // Invocado desde: iniciarDistancia() y actualizarDistancia()
+    // Función: Sube al servidor la distancia y pasos
+    // ---------------------------------------------------------------------------------------------
+    public void subirDistanciaYPasos(String URL, LatLng p1, LatLng p2){
+        //declara una peticion
+        double distancia = distancia(p1,p2);
+        int pasos = pasos(distancia);
+        int dist = (int) Math.round(distancia);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, response -> {
+
+        }, error -> Log.e("hola", error.toString()))
+        {
+            //indicar los parametros que vamos a enviar
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new LinkedHashMap<>();
+                //enviar los parametros ()
+                parametros.put("idUsuario", ConstantesAplicacion.ID_USUARIO);
+                parametros.put("dia", getFecha());
+                parametros.put("distancia", String.valueOf(dist+ConstantesAplicacion.DISTANCIA));
+                parametros.put("distancia", String.valueOf(pasos+ConstantesAplicacion.PASOS));
+                return parametros;
+            }
+        };
+
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //procesar la peticiones hechas por nuestra app
+
+
+        VolleySingleton.tomarInstancia(MyApplication.getAppContext()).anyadirAColaPeticiones(stringRequest);
+        consultarDistancia(ConstantesAplicacion.URL_CONSULTA_DISTANCIA, getFecha());
+    }
     // ---------------------------------------------------------------------------------------------
     //                  -> Cursor
     //                  getLecuras() <-

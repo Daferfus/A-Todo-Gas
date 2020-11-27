@@ -19,12 +19,15 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.example.daferfus_upv.btle.BD.Logica;
+import com.example.daferfus_upv.btle.ConstantesAplicacion;
 import com.example.daferfus_upv.btle.Utilidades.GpsUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
@@ -37,7 +40,7 @@ public class GeolocalizacionWorker extends Worker {
     private double latitud = 0.0, longitud = 0.0;
     private double latitudAuxiliar = 0.0, longitudAuxiliar = 0.0;
     public static String ubicacion;
-
+    private Logica logica;
     private LocationRequest peticionLocalizacion;
     private LocationCallback callbackLocalizacion;
 
@@ -60,6 +63,7 @@ public class GeolocalizacionWorker extends Worker {
         peticionLocalizacion.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         peticionLocalizacion.setInterval(0); // 10 segundos
         peticionLocalizacion.setFastestInterval(0); // 5 segundos
+        logica = new Logica(context);
 
         // Se activa GPS.
         new GpsUtils(getApplicationContext()).activarGPS(isGPSEnable -> estaGPSActivo = isGPSEnable); // new GpsUtils
@@ -89,6 +93,7 @@ public class GeolocalizacionWorker extends Worker {
                             latitudAuxiliar = latitud;
                             longitudAuxiliar = longitud;
                             primeraExtraccionPosicion = false;
+                            logica.iniciarDistancia();
                             // Y en caso contrario...
                         } else {
                             // ...y si no se ha cambiado posición...
@@ -98,6 +103,9 @@ public class GeolocalizacionWorker extends Worker {
                                 noCambiaPosicion = true;
                                 // Y en caso contrario...
                             } else {
+                                LatLng antes = new LatLng(latitudAuxiliar, longitudAuxiliar);
+                                LatLng ahora = new LatLng(latitud, longitud);
+                                logica.subirDistanciaYPasos(ConstantesAplicacion.URL_ACTUALIZAR_DISTANCIA, antes, ahora);
                                 // ...añade los datos a la variable auxiliar...
                                 latitudAuxiliar = latitud;
                                 longitudAuxiliar = longitud;

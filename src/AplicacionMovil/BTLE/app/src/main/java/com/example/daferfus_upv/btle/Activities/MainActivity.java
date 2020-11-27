@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ import com.example.daferfus_upv.btle.Perfil;
 import com.example.daferfus_upv.btle.R;
 import com.example.daferfus_upv.btle.Workers.EscaneadoWorker;
 import com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker;
+import com.example.daferfus_upv.btle.Workers.ScrappingWorker;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewUsuario;
     public static TextView textViewvalorSO2;
     LoginActivity login;
+    public static TextView valorMedia;
+    public static ProgressBar porcentajeCont;
     // --------------------------------------------------------------
     //              solicitarPermiso() <-
     //
@@ -161,6 +165,14 @@ public class MainActivity extends AppCompatActivity {
         WorkManager
                 .getInstance()
                 .enqueue(medicionesWorkRequest);
+
+        /*WorkRequest scrappingWorkRequest =
+                new OneTimeWorkRequest.Builder(ScrappingWorker.class)
+                        .build();
+        WorkManager
+                .getInstance()
+                .enqueue(scrappingWorkRequest);
+*/
         textViewUsuario= findViewById(R.id.textViewMostrarUsuario);
         mostrarUsuario();
         
@@ -222,8 +234,9 @@ public class MainActivity extends AppCompatActivity {
         cardViewRecorrido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Ponemos lo que queremos que se lance al pulsar el Cardview
-                mostrarToast("Recorrido");
+                Intent i = new Intent(getApplicationContext(), RecorridoActivity.class);
+                i.putExtra("Usuario", envioDatosEntreActividades());
+                startActivity(i);
             }
         });
 //      CARDVIEW MEDICIONES
@@ -243,7 +256,9 @@ public class MainActivity extends AppCompatActivity {
         cardViewLogros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarToast("Logros");
+                Intent i = new Intent(getApplicationContext(), LogrosActivity.class);
+                i.putExtra("Usuario", envioDatosEntreActividades());
+                startActivity(i);
             }
         });
 //      CARDVIEW CONSEJOS
@@ -252,7 +267,9 @@ public class MainActivity extends AppCompatActivity {
         cardViewConsejos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarToast("Consejos");
+                Intent i = new Intent(getApplicationContext(), ConsejosActivity.class);
+                i.putExtra("Usuario", envioDatosEntreActividades());
+                startActivity(i);
             }
         });
 
