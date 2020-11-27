@@ -1,25 +1,26 @@
 <?php
 include 'conexion.php';
+//$idUsuario=$_POST['idUsuario'];
+//$momento=$_POST['momento'];
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
-$idUsuario;
-if (isset($_GET['idUsuario']))
-{
-    $idUsuario = $_GET['idUsuario'];
-}
 $dia;
 if (isset($_GET['dia']))
 {
     $dia = $_GET['dia'];
 }
-
+$idUsuario;
+if (isset($_GET['idUsuario']))
+{
+    $idUsuario = $_GET['idUsuario'];
+}
 //Sentencia sql para consultar los pasos recorridos en 1 dia
-$sentencia=$conexion->prepare("SELECT pasos FROM `distanciaypasosrecorridos` WHERE idUsuario='$idUsuario' AND dia='$dia'");
+$sentencia=$conexion->prepare("SELECT valor FROM `medialecturas` WHERE dia='$dia' AND idUsuario='$idUsuario'");
 
 //Comprobamos que la sentencia no sea false
 if($sentencia===false){
      return [ 'ok' => 'false' ];
 }
-
+//$sentencia->bind_param('s',$idUsuario);
 $sentencia->execute();
 
 $resultado = $sentencia->get_result();

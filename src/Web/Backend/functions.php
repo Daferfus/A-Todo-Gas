@@ -5,7 +5,7 @@
 header('Content-Type: text/html;charset=utf-8' );
 
 function ejecutarComandoSQL($commando){
-    $mysqli = new mysqli("localhost", "root", "", "lecturas");
+    $mysqli = new mysqli("localhost", "root", "", "Lecturas");
     if($mysqli->connect_errno){
         printf("Connect failed: %s\n", $mysqli->connect_error);
         exit();
@@ -24,7 +24,7 @@ function ejecutarComandoSQL($commando){
 }
 
 function getSQLResultSet($commando){
-    $mysqli = new mysqli("localhost", "root", "", "lecturas");
+    $mysqli = new mysqli("localhost", "root", "", "Lecturas");
     if($mysqli->connect_errno){
         printf("Connect failed: %s\n", $mysqli->connect_error);
         exit();

@@ -35,7 +35,7 @@ if (isset($_POST['pasos']))
     $pasos = $_POST['pasos'];
 }
     //consulta sql para introducir los valores
-$consulta="insert into distanciaypasosrecorridos values('$idUsuario','$dia','$distancia','$pasos')";
+$consulta="UPDATE distanciaypasosrecorridos SET distancia ='$distancia', pasos='$pasos' WHERE idUsuario='$idUsuario' AND dia='$dia'";
 mysqli_query($conexion, $consulta) or die (mysqli_error());
 mysqli_close($conexion);
 }

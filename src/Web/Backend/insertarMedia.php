@@ -8,34 +8,28 @@ include 'conexion.php';
 //comprobar que el metodo es POST
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     //declaracion de las variables a subir
-$idUsuario;
-
-if (isset($_POST['idUsuario']))
-{
-    $idUsuario = $_POST['idUsuario'];
-}
 $dia;
 //en caso de recibir un valor para la variable en cuestion lo toma
 if (isset($_POST['dia']))
 {
     $dia = $_POST['dia'];
 }
+$idUsuario;
 
-$distancia;
-
-if (isset($_POST['distancia']))
+if (isset($_POST['idUsuario']))
 {
-    $distancia = $_POST['distancia'];
+    $idUsuario = $_POST['idUsuario'];
+}
+$valor;
+
+if (isset($_POST['valor']))
+{
+    $valor = $_POST['valor'];
 }
 
-$pasos;
 
-if (isset($_POST['pasos']))
-{
-    $pasos = $_POST['pasos'];
-}
     //consulta sql para introducir los valores
-$consulta="insert into distanciaypasosrecorridos values('$idUsuario','$dia','$distancia','$pasos')";
+$consulta="insert into medialecturas values('$dia','$idUsuario','$valor')";
 mysqli_query($conexion, $consulta) or die (mysqli_error());
 mysqli_close($conexion);
 }
