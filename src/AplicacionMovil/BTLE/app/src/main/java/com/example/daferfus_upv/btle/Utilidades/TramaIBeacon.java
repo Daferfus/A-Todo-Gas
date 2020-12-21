@@ -6,19 +6,17 @@ import java.util.Arrays;
 // @author: Jordi Bataller i Mascarell
 // -----------------------------------------------------------------------------------
 public class TramaIBeacon {
-    private byte[] prefijo = null; // 9 bytes
-    private byte[] uuid = null; // 16 bytes
-    private byte[] major = null; // 2 bytes
-    private byte[] minor = null; // 2 bytes
-    private byte txPower = 0; // 1 byte
+    private final byte[] prefijo; // 9 bytes
+    private final byte[] uuid; // 16 bytes
+    private final byte[] major; // 2 bytes
+    private final byte[] minor; // 2 bytes
+    private final byte txPower; // 1 byte
 
-    private byte[] losBytes;
-
-    private byte[] advFlags = null; // 3 bytes
-    private byte[] advHeader = null; // 2 bytes
-    private byte[] companyID = new byte[2]; // 2 bytes
-    private byte iBeaconType = 0 ; // 1 byte
-    private byte iBeaconLength = 0 ; // 1 byte
+    private final byte[] advFlags; // 3 bytes
+    private final byte[] advHeader; // 2 bytes
+    private final byte[] companyID; // 2 bytes
+    private final byte iBeaconType; // 1 byte
+    private final byte iBeaconLength; // 1 byte
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
@@ -52,9 +50,9 @@ public class TramaIBeacon {
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
-    public byte[] getLosBytes() {
+    /*public byte[] getLosBytes() {
         return losBytes;
-    }
+    }*/
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
@@ -89,13 +87,12 @@ public class TramaIBeacon {
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
     public TramaIBeacon(byte[] bytes ) {
-        this.losBytes = bytes;
 
-        prefijo = Arrays.copyOfRange(losBytes, 0, 8+1 ); // 9 bytes
-        uuid = Arrays.copyOfRange(losBytes, 9, 24+1 ); // 16 bytes
-        major = Arrays.copyOfRange(losBytes, 25, 26+1 ); // 2 bytes
-        minor = Arrays.copyOfRange(losBytes, 27, 28+1 ); // 2 bytes
-        txPower = losBytes[ 29 ]; // 1 byte
+        prefijo = Arrays.copyOfRange(bytes, 0, 8+1 ); // 9 bytes
+        uuid = Arrays.copyOfRange(bytes, 9, 24+1 ); // 16 bytes
+        major = Arrays.copyOfRange(bytes, 25, 26+1 ); // 2 bytes
+        minor = Arrays.copyOfRange(bytes, 27, 28+1 ); // 2 bytes
+        txPower = bytes[ 29 ]; // 1 byte
 
         advFlags = Arrays.copyOfRange( prefijo, 0, 2+1 ); // 3 bytes
         advHeader = Arrays.copyOfRange( prefijo, 3, 4+1 ); // 2 bytes

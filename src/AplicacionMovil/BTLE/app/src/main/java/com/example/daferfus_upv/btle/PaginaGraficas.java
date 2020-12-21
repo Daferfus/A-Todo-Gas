@@ -37,20 +37,17 @@ public class PaginaGraficas extends AppCompatActivity {
         setContentView(R.layout.grafica_mediciones);
 
 
-        findViewById(R.id.linearAtras).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent i = new Intent (getApplicationContext(), MainActivity.class);
-                i.putExtra("Usuario", envioDatosEntreActividades());
-                startActivity(i);
-            }
+        findViewById(R.id.linearAtras).setOnClickListener(v -> {
+            Intent i = new Intent (getApplicationContext(), MainActivity.class);
+            startActivity(i);
+            finish();
         });
 
 
         grafica = findViewById(R.id.chart);
 
-        List yAxisValues = new ArrayList(); //lista eje y
-        List axisValues = new ArrayList();  //lista eje x
+        List<PointValue> yAxisValues = new ArrayList<>(); //lista eje y
+        List<AxisValue> axisValues = new ArrayList<>();  //lista eje x
 
         Line line = new Line(yAxisValues).setColor(Color.parseColor("#9C27B0"));// la linea de la grafica se forma por la lista del eje y
 
@@ -62,7 +59,7 @@ public class PaginaGraficas extends AppCompatActivity {
             yAxisValues.add(new PointValue(i, yAxisData[i]));
         }
 
-        List lines = new ArrayList();
+        List<Line> lines = new ArrayList<>();
         lines.add(line);
 
         LineChartData data = new LineChartData();
@@ -114,7 +111,7 @@ public class PaginaGraficas extends AppCompatActivity {
 
         ListView listView = findViewById(R.id.listview_graficas);
 
-        ArrayAdapter ADP = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1,datosString);
+        ArrayAdapter<String> ADP = new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_list_item_1,datosString);
         listView.setAdapter(ADP);
 
 
@@ -131,13 +128,6 @@ public class PaginaGraficas extends AppCompatActivity {
 
         listView.setAdapter((adapter));
 
-    }
-
-
-    public String envioDatosEntreActividades(){
-        Bundle datos = this.getIntent().getExtras();
-        String variable_string = datos.getString("Usuario");
-        return variable_string;
     }
 
 }

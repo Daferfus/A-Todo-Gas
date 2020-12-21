@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.example.daferfus_upv.btle.AcercaDe.InterfazPantalla;
 import com.example.daferfus_upv.btle.R;
 
 import java.util.List;
@@ -64,4 +63,3 @@ public class InstruccionesViewPagerAdapter extends PagerAdapter {
 
     }
 }
-

@@ -9,32 +9,26 @@ package com.example.daferfus_upv.btle.Workers;
 // ------------------------------------------------------------------
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.example.daferfus_upv.btle.BD.Lectura;
 import com.example.daferfus_upv.btle.BD.Logica;
-import com.example.daferfus_upv.btle.MyApplication;
+import com.example.daferfus_upv.btle.Utilidades.LecturaCallback;
 import com.example.daferfus_upv.btle.Utilidades.TratamientoDeLecturas;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
 
-import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.MOMENTO;
-import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.UBICACION;
+import static com.example.daferfus_upv.btle.ConstantesAplicacion.DESVIACION;
+import static com.example.daferfus_upv.btle.ConstantesAplicacion.ID_USUARIO;
 import static com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker.ubicacion;
 
 // ------------------------------------------------------------------
@@ -83,16 +77,51 @@ public class MantenimientoDeMedidasWorker extends Worker {
         Log.d("BDWorker", "Enviando Medición");
         String idMagnitud = "SO2";
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dtfDia = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime nowDia = LocalDateTime.now();
 
-        String momento =  dtf.format(now);
+        String dia =  dtfDia.format(nowDia);
+
+        DateTimeFormatter dtfHora = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalDateTime nowHora = LocalDateTime.now();
+
+        String hora =  dtfHora.format(nowHora);
+        Log.d("Hora es", hora);
         int estadoSincronizacionServidor = 1;
 
-        boolean datoExistente = mDBHelper.getLectura(momento, ubicacion);
+        Log.d("BDWorker", "Ubicacion es " + ubicacion);
+        boolean datoExistente = mDBHelper.getLectura(dia, hora, ubicacion);
 
             if(!TextUtils.isEmpty(ubicacion) && !datoExistente){
-                mDBHelper.guardarLecturaEnServidor(new Lectura(momento, ubicacion, valor, idMagnitud, estadoSincronizacionServidor), MyApplication.getAppContext());
+                Log.d("MantenimientoDeMedidasWorker", "La desviacion es" + DESVIACION);
+                Lectura lectura = new Lectura(dia, hora, ubicacion, valor+DESVIACION, idMagnitud, ID_USUARIO, estadoSincronizacionServidor);
+                mDBHelper.guardarLecturaEnServidor(lectura, new LecturaCallback() {
+                    @Override
+                    public void hacerScrapping() {
+
+                    }
+
+                    @Override
+                    public void crearCopiaDeSeguridad() {
+                        Log.d("MantenimientoDeMedidasWorker", "Creando copia de seguridad");
+                        mDBHelper.guardarLecturaEnLocal(lectura,1);
+                    }
+
+                    @Override
+                    public void cogerDesviacion(String desviacion) {
+
+                    }
+
+                    @Override
+                    public void actualizarDesviacion(String valorLecturaEstacion, String valorLectura) {
+
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        mDBHelper.guardarLecturaEnLocal(lectura,0);
+                    }
+                });
             }
             else{
                 Log.d("BDWorker", "Ubicación nula");

@@ -38,16 +38,22 @@ $response = array();
 if($_SERVER['REQUEST_METHOD']=='POST'){
  
  // ...recoge los parametros enviados a través del cuerpo de la petición...
- $momento = $_POST['momento'];
+ $dia = $_POST['dia'];
+ $hora = $_POST['hora'];
  $ubicacion = $_POST['ubicacion'];
  $valor = $_POST['valor'];
  $idMagnitud = $_POST['idMagnitud']; 
+ $idUsuario = $_POST['idUsuario'];
  
  // ...crea una sentencia para insertar dichos parámetros en la base de datos...
- $stmt = $conn->prepare("INSERT INTO lecturas VALUES (?, ?, ?, ?)");
+if(!$stmt = $conn->prepare("INSERT INTO lecturas VALUES (?, ?, ?, ?, ?, ?)")){
+   die( "Error preparing: (" .$conn->errno . ") " . $conn->error);
+}
  
  // ...ata los parámetros a dicha sentencia...
- $stmt->bind_param("ssss",$momento,$ubicacion,$valor,$idMagnitud);
+ if(!$stmt->bind_param("ssssss",$dia,$hora,$ubicacion,$valor,$idMagnitud,$idUsuario)){
+   die( "Error in bind_param: (" .$conn->errno . ") " . $conn->error);
+ }
  
  // ...y finalmente ejecuta dicha sentencia. Y en caso de ser un éxito...
  if($stmt->execute()){
@@ -55,6 +61,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
   $response['error'] = false; 
   $response['message'] = 'Lectura guardada con éxito'; 
  }else{
+   die( "Error in bind_param: (" .$conn->errno . ") " . $conn->error);
   // En caso contrario da un mensaje de error.
   $response['error'] = true; 
   $response['message'] = 'Por favor, inténtalo de nueov';
@@ -92,13 +99,14 @@ else if($_SERVER['REQUEST_METHOD']=='GET'){
    // ...y por cada fila de la tabla recogida...
    while($row = mysqli_fetch_assoc($retval)) {
       // ...se asocian los datos a sus respectivas variables...
-      $momento = $row['momento']; 
+      $dia = $row['dia'];
+      $hora = $row['hora']; 
       $ubicacion = $row['ubicacion'];
       $valor = $row['valor'];
       $idMagnitud = $row['idMagnitud']; 
-      
+      $idUsuario = $row['idUsuario'];
       // ...y cada variable es asignada a una propiedad y puesta en un array...
-      $lecturas[] = array('momento'=> $momento, 'ubicacion'=> $ubicacion, 'valor'=> $valor, 'idMagnitud'=> $idMagnitud); 
+      $lecturas[] = array('dia'=> $dia, 'hora'=> $hora, 'ubicacion'=> $ubicacion, 'valor'=> $valor, 'idMagnitud'=> $idMagnitud, 'idUsuario'=> $idUsuario); 
    } // while()
    //
    //

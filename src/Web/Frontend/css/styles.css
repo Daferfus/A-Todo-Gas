@@ -4,7 +4,7 @@
     --gold1:#F4BD76;
     --gold2:#F6CD8F;
     --gray:#ffffff80;
-    --gray2:#f7d9d990;
+    --gray2: #f7d9d990;
     --black1: #1A1B1F;
     --black2: #30353B;
     --shadow: 0 8px 8px;
@@ -122,6 +122,13 @@ body{
     margin: 15px 0;
 }
 
+.copy2{
+    font-size: 16px;
+    color: var(--gray);
+    text-shadow: var(--shadow)  var(--color_shadow);
+    margin: 10px 0;
+}
+
 .copy__active{
     font-weight: 700;
 }
@@ -136,6 +143,282 @@ body{
     box-shadow: var(--shadow) var(--color_shadow);
     border-radius: 6px;
 }
+
+/* 
+   ----------------------------------------------
+   ----------------------------------------------
+
+                  FLECHA ARRIBA
+
+  ----------------------------------------------
+  ----------------------------------------------
+*/
+
+
+.ir-arriba {
+	display:none;
+	padding:8px 13px;
+	background: #d1963d;
+	font-size:30px;
+	color:#fff;
+	cursor:pointer;
+	position: fixed;
+	bottom:20px;
+	right:20px;
+    border-radius: 8px;
+}
+
+
+/* 
+   ----------------------------------------------
+   ----------------------------------------------
+
+                   FLECHA ABAJO 
+
+  ----------------------------------------------
+  ----------------------------------------------
+*/
+
+
+
+.flecha-abajo,
+.flecha-abajo:before{
+  position: absolute;
+  left: 50%;
+}
+
+
+
+.flecha-abajo{
+  width: 40px;
+  height: 40px;
+  top: 90vh;
+  margin: -20px 0 0 -20px;
+  -webkit-transform: rotate(45deg);
+  border-left: none;
+  border-top: none;
+  border-right: 2px #fff solid;
+  border-bottom: 2px #fff solid;
+}
+  
+.flecha-abajo:before{
+  content: '';
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  margin: -10px 0 0 -10px;
+  border-left: none;
+  border-top: none;
+  border-right: 1px #fff solid;
+  border-bottom: 1px #fff solid;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-name: arrow;
+}
+
+@keyframes arrow{
+    0%{ opacity: 1;}
+    100%{opacity: 0;
+    transform: translate(10px, 10px);}
+    
+}
+
+
+
+/* 
+   ----------------------------------------------
+   ----------------------------------------------
+
+                   LOG IN 
+
+  ----------------------------------------------
+  ----------------------------------------------
+*/
+
+
+
+
+::selection{
+  background: #4158d0;
+  color: #fff;
+}
+
+.login{
+  height: calc(100vh);
+  background-color: rgba(26, 27, 31,0.4);
+  display: none;
+}
+
+
+.wrapper{
+  width: 450px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+  display: flex;
+  z-index: 3;
+  justify-content: center;
+}
+
+.show-btn{
+  background: #fff;
+  padding: 5px 10px;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--gold1);
+  cursor: pointer;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  border-radius: 0 15px 15px 0;
+}
+.wrapper{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+input[type="checkbox"]{
+  display: none;
+}
+
+#show:checked ~ .login{
+  display: flex;
+}
+
+#show:checked ~ .show-btn{
+  display: none;
+}
+
+
+.wrapper .close-btn{
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  z-index: 8;
+  font-size: 18px;
+  cursor: pointer;
+}
+.wrapper .close-btn:hover{
+  color: var(--black2);
+}
+
+
+.wrapper .title{
+  font-size: 35px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 50px;
+  color: #fff;
+}
+
+.wrapper .fondoTitle{
+  user-select: none;
+  border-radius: 15px 0 0 15px;
+  background: linear-gradient(180deg, #cf8d38 0%, #F4BD76 100%);  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.wrapper form{
+  padding: 10px 30px 50px 30px;
+}
+.wrapper form .field{
+  height: 50px;
+  width: 100%;
+  margin-top: 20px;
+  position: relative;
+}
+.wrapper form .field input{
+  height: 100%;
+  width: 100%;
+  outline: none;
+  font-size: 17px;
+  padding-left: 20px;
+  border: 1px solid lightgrey;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+.wrapper form .field input:focus,
+form .field input:valid{
+  border-color: #1A1B1F;
+}
+.wrapper form .field label{
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  color: #999999;
+  font-weight: 400;
+  font-size: 17px;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+form .field input:focus ~ label,
+form .field input:valid ~ label{
+  top: 0%;
+  font-size: 16px;
+  color: #1A1B1F;
+  background: #fff;
+  transform: translateY(-50%);
+}
+form .content{
+  display: flex;
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  align-items: center;
+  justify-content: space-around;
+}
+form .content .checkbox{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+form .content input{
+  width: 15px;
+  height: 15px;
+  background: red;
+}
+form .content label{
+  color: #1A1B1F;
+  user-select: none;
+  padding-left: 5px;
+}
+form .content .pass-link{
+  color: "";
+}
+form .field input[type="submit"]{
+  color: #fff;
+  border: none;
+  padding-left: 0;
+  margin-top: -10px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  background: linear-gradient(-135deg, #F4BD76, #cf8d38);
+  transition: all 0.3s ease;
+}
+form .field input[type="submit"]:active{
+  transform: scale(0.95);
+}
+form .signup-link{
+  color: #262626;
+  margin-top: 20px;
+  text-align: center;
+}
+form .pass-link a,
+form .signup-link a{
+  color: #4158d0;
+  text-decoration: none;
+}
+form .pass-link a:hover,
+form .signup-link a:hover{
+  text-decoration: underline;
+}
+
+
+
 
 /* 
    ----------------------------------------------
@@ -548,8 +831,7 @@ body{
 
 
 .footer{
-    background: var(--gold2);;
-    
+    background: var(--gold2); 
 }
 
 .footer__caption{
@@ -561,7 +843,7 @@ body{
 
 .title__footer{
     font-size: 24px;
-    margin-bottom: 32px;
+    margin-bottom: 18px;
 }
 
 .descarga{
@@ -574,7 +856,7 @@ body{
 
 .descarga__item{
     display: flex;
-    padding: 18px 12px;
+    padding: 10px 6px;
     border-radius: 6px;
     border: 1px solid var(--black2);
     width: 42%;
@@ -639,42 +921,6 @@ body{
     margin-right: 16px;
 }
 
-.contact{
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    color: #fff;
-}
-
-.item__contact{
-    width: 25%;
-    padding: 60px 0;
-    text-align: center;
-    background: linear-gradient(180deg, var(--black2) 0%, var(--black1) 100%);
-
-}
-
-
-.item__contact--gold{
-    background: linear-gradient(180deg, #F7CE90 0%, #F4BD76 100%);
-    color: var(--black1);
-}
-
-.contact__icon{
-    font-size: 14px;
-    color: var(--gold1);
-    line-height: 20px;
-    margin-right: 4px;
-}
-
-.contact__icon--modifier{
-    color: var(--black1);
-}
-
-.contact__title{
-    font-size: 16px;
-    line-height: 20px;
-}
 
 @media screen and (max-width:900px){
     #mockup{
@@ -695,6 +941,10 @@ body{
 
     .copy{
         font-size: 22px;
+    }
+    
+    .copy2{
+        display: none;
     }
 
     .cta{
@@ -772,6 +1022,7 @@ body{
         padding: 60px 0;
     }
 
+    
     .nav__container{
         flex-wrap: wrap;
         flex-direction: column;

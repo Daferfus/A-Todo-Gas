@@ -14,6 +14,12 @@ if (isset($_POST['dia']))
 {
     $dia = $_POST['dia'];
 }
+$hora;
+
+if (isset($_POST['hora']))
+{
+    $hora = $_POST['hora'];
+}
 $idUsuario;
 
 if (isset($_POST['idUsuario']))
@@ -29,7 +35,7 @@ if (isset($_POST['valor']))
 
 
     //consulta sql para introducir los valores
-$consulta="insert into medialecturas values('$dia','$idUsuario','$valor')";
+$consulta="insert into medialecturas values('$dia','$hora','$idUsuario','$valor')";
 mysqli_query($conexion, $consulta) or die (mysqli_error());
 mysqli_close($conexion);
 }

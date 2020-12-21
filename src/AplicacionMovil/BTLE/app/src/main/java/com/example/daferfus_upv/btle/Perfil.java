@@ -18,20 +18,13 @@ public class Perfil extends AppCompatActivity {
         setContentView(R.layout.perfil_activity);
 
 
-        findViewById(R.id.linearAtras).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent i = new Intent (getApplicationContext(), MainActivity.class);
-                i.putExtra("Usuario", envioDatosEntreActividades());
-                startActivity(i);
-            }
+        findViewById(R.id.linearAtras).setOnClickListener(v -> {
+            Intent i = new Intent (getApplicationContext(), MainActivity.class);
+            startActivity(i);
+            finish();
         });
 
     } // onCreate()
 
-    public String envioDatosEntreActividades(){
-        Bundle datos = this.getIntent().getExtras();
-        String variable_string = datos.getString("Usuario");
-        return variable_string;
-    }
+
 }

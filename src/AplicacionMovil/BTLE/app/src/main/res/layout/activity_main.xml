@@ -153,10 +153,30 @@
 
             </LinearLayout>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewPulsa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_mediumitalic"
+                    android:text="Pulsa para acceder"
+                    android:textAlignment="textStart"
+                    android:textColor="#ffff"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -495,7 +515,7 @@
 
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
-    <TextView
+   <!-- <TextView
         android:id="@+id/tvMostrarConsultas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -507,4 +527,5 @@
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+        -->
 </androidx.constraintlayout.widget.ConstraintLayout>

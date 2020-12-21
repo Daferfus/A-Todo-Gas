@@ -38,20 +38,17 @@ public class SplashScreen extends AppCompatActivity {
         imagen.setAnimation(animArriba);
         eslogan.setAnimation(animAbajo);
 
-        Thread thread = new Thread(){
-            @Override
-            public void run() {
-                try {
-                    sleep(3000);
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        };
+
+        });
 
         thread.start();
     }

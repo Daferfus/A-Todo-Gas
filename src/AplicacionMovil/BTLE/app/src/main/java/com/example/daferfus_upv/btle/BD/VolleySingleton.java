@@ -7,6 +7,7 @@ package com.example.daferfus_upv.btle.BD;
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.android.volley.Request;
@@ -15,8 +16,10 @@ import com.android.volley.toolbox.Volley;
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
 public class VolleySingleton {
+    @SuppressLint("StaticFieldLeak")
     private static VolleySingleton mInstancia;
     private RequestQueue mColaPeticion;
+    @SuppressLint("StaticFieldLeak")
     private static Context mContexto;
 
     // --------------------------------------------------------------

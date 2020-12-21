@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.FLAG_GRANT_READ_URI_PERMISSION"/>
+
 
     <application android:name="com.example.daferfus_upv.btle.MyApplication"
         android:allowBackup="true"
@@ -56,6 +58,16 @@
             android:screenOrientation="portrait"
             tools:ignore="Instantiatable" />
         <activity android:name=".Activities.RecorridoActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".Activities.MapaActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".Activities.InvitadoActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="Instantiatable" />
+
+        <activity android:name=".Activities.Admin_web"
             android:screenOrientation="portrait"
             tools:ignore="Instantiatable" />
 

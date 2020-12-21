@@ -34,7 +34,6 @@ import static com.example.daferfus_upv.btle.Utilidades.TratamientoDeLecturas.mos
 // ------------------------------------------------------------------
 
 public class EscaneadoWorker extends Worker {
-
     // --------------------------------------------------------------
     //                  constructor() <-
     //                  <- Context, WorkParameters

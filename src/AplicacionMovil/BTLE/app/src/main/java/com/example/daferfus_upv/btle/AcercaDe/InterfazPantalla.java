@@ -11,7 +11,7 @@ public class InterfazPantalla {
         ScreenImg = screenImg;
     }
 
-    public void setTitle(String title) {
+    /*public void setTitle(String title) {
         Title = title;
     }
 
@@ -21,7 +21,7 @@ public class InterfazPantalla {
 
     public void setScreenImg(int screenImg) {
         ScreenImg = screenImg;
-    }
+    }*/
 
     public String getTitle() {
         return Title;

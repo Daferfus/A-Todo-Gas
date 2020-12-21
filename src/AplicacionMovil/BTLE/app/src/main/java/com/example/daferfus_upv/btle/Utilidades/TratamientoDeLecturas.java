@@ -8,16 +8,17 @@ package com.example.daferfus_upv.btle.Utilidades;
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 
-import androidx.work.Constraints;
-import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
 import com.example.daferfus_upv.btle.Activities.MainActivity;
+import com.example.daferfus_upv.btle.BD.Logica;
+import com.example.daferfus_upv.btle.ConstantesAplicacion;
 import com.example.daferfus_upv.btle.MyApplication;
 import com.example.daferfus_upv.btle.R;
 import com.example.daferfus_upv.btle.Workers.ComprobadorEstadoRedWorker;
@@ -31,12 +32,6 @@ public class TratamientoDeLecturas {
 
     public static int valor;
     private static int cont;
-
-    public static byte[] valorSO2 ;
-    public static byte[] getValorSO2() {
-        return valorSO2;
-    }
-
 
     // --------------------------------------------------------------
     //                  constructor()
@@ -93,6 +88,7 @@ public class TratamientoDeLecturas {
         } // if()
     } // ()
 
+    @SuppressLint("SetTextI18n")
     public static boolean extraerMediciones(TramaIBeacon trama) {
         byte[] contador = trama.getMajor();
         byte[] valorSO2 = trama.getMinor();
@@ -101,6 +97,11 @@ public class TratamientoDeLecturas {
                 valor = Utilidades.bytesToInt(valorSO2);
                 MainActivity.textViewvalorSO2.setText(Integer.toString(valor));
                 cont = Utilidades.bytesToInt(contador);
+                if(ConstantesAplicacion.MEDIA==0){
+                    Logica.insertarMedia(ConstantesAplicacion.URL_GUARDADO_MEDIA, Utilidades.bytesToInt(valorSO2));
+                }else{
+                    Logica.actualizarMedia(ConstantesAplicacion.URL_ACTUALIZAR_MEDIA, Utilidades.bytesToInt(valorSO2));
+                }
                 Log.d("Tratamiento Datos", "Contador: " + Utilidades.bytesToInt(contador));
                 Log.d("Tratamiento Datos", "SO2: " + Utilidades.bytesToInt(valorSO2));
                 return true;
@@ -134,6 +135,9 @@ public class TratamientoDeLecturas {
                     notis.notificarAltaImportancia(2, MyApplication.getAppContext().getString(R.string.nombre_app),  MyApplication.getAppContext().getString(R.string.bateria_baja));
                     return false;
                 }else{
+                    if(val >=350){
+                        notis.notificarAltaImportancia(2, MyApplication.getAppContext().getString(R.string.nombre_app),  MyApplication.getAppContext().getString(R.string.limte_legal));
+                    }
                     return true;
                 }
             }

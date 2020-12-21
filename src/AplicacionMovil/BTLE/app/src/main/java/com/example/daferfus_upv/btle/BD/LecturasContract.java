@@ -15,14 +15,13 @@ public class LecturasContract {
     public static abstract class LecturasEntry implements BaseColumns {
         public static final String TABLE_NAME ="Lecturas";
 
-        public static final String MOMENTO = "momento";
+        public static final String DIA = "dia";
+        public static final String HORA = "hora";
         public static final String UBICACION = "ubicacion";
         public static final String VALOR = "valor";
         public static final String ID_MAGNITUD = "idMagnitud";
+        public static final String ID_USUARIO = "idUsuario";
         public static final String ESTADO_SINCRONIZACION_SERVIDOR = "estadoSincronizacionServidor";
-        public static final String NOMBRE = "nombre";
-        public static final String APELLIDOS ="apellidos";
-        public static final String IDUSUARIO = "idUsuario";
     } // abstract class
 } // class
 // --------------------------------------------------------------

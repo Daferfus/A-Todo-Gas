@@ -19,7 +19,7 @@
     <!-- PANEL PRINCIPAL CLIENTE -->
     <string name="textPanelPrincipal">Panel Principal </string>
     <string name="textObserva">Observa el mapa de tu zona hoy.</string>
-    <string name="textContaminacion">Nivel Contaminación</string>
+    <string name="textContaminacion">Nivel de contaminación última hora</string>
     <string name="textMapa">Mapa Gases</string>
     <string name="textSO2">SO2</string>
     <string name="textNO2">NO2</string>
@@ -90,4 +90,6 @@
     <string name="nodo_estropeado">El nodo sensor se ha estropeado, contacte con nuestro soporte técnico.</string>
     <string name="bateria_baja">El nodo sensor se está quedando sin batería, se recomienda cargarlo.</string>
     <string name="nodo_desconectado">El nodo sensor se ha sido desconectado, compruebe que el bluetooth está activado y que el nodo está a menos de 10m.</string>
+    <string name="compartir_ubicacion">Compartir ubicación</string>
+    <string name="limte_legal">El nodo sensor ha detectado una cantidad de SO2 por encima del límite legal establecido, intente abandonar la zona.</string>
 </resources>

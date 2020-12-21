@@ -14,8 +14,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import androidx.work.ListenableWorker;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -26,14 +24,12 @@ import com.android.volley.toolbox.Volley;
 import com.example.daferfus_upv.btle.Activities.MainActivity;
 import com.example.daferfus_upv.btle.ConstantesAplicacion;
 import com.example.daferfus_upv.btle.MyApplication;
-import com.example.daferfus_upv.btle.Workers.ComprobadorEstadoRedWorker;
-import com.example.daferfus_upv.btle.Workers.MantenimientoDeMedidasWorker;
+import com.example.daferfus_upv.btle.Utilidades.LecturaCallback;
+import com.example.daferfus_upv.btle.Utilidades.TratamientoDeLecturas;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,23 +38,27 @@ import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.DIA;
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.ESTADO_SINCRONIZACION_SERVIDOR;
+import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.HORA;
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.ID_MAGNITUD;
-import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.MOMENTO;
+import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.ID_USUARIO;
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.TABLE_NAME;
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.UBICACION;
 import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.VALOR;
-import static com.example.daferfus_upv.btle.Workers.GeolocalizacionWorker.ubicacion;
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
 
 
-public class Logica extends SQLiteOpenHelper {
+public class Logica extends SQLiteOpenHelper implements Callback<String> {
 
 
     // ------------------------------------------------------------------
@@ -67,15 +67,11 @@ public class Logica extends SQLiteOpenHelper {
     private static final String NOMBRE_BD = "Lecturas.db";
     private static String RUTA_BD = "";
     private static final int VERSION_BD = 1;
-    private static Logica mInstance = null;
     // ------------------------------------------------------------------
     // Configuración de la Base de Datos
     // ------------------------------------------------------------------
-    private SQLiteDatabase mDataBase;
     private final Context mContexto;
     private boolean mNecesitaActualizar = false;
-
-
     // --------------------------------------------------------------
     //                  constructor() <-
     //                  <- Context
@@ -206,12 +202,17 @@ public class Logica extends SQLiteOpenHelper {
     // Invocado desde: guardarLecturaEnServidor()
     // Función: Inserta una lectura del sensor en la tabla Lecturas en la base de datos local.
     // ----------------------------------------------------------------------------------------
-    public long guardarLecturaEnLocal(SQLiteDatabase bd, Lectura lectura, int estadoSincronizacionBaseDatos) {
+    public void guardarLecturaEnLocal(Lectura lectura, int estadoSincronizacionBaseDatos) {
         Log.d("Estado", "El dato está: " + estadoSincronizacionBaseDatos);
-        return bd.insert(
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        db.insert(
                 TABLE_NAME,
                 null,
                 lectura.toContentValues(estadoSincronizacionBaseDatos));
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
     } // ()
 
 
@@ -222,61 +223,203 @@ public class Logica extends SQLiteOpenHelper {
     // Invocado desde: MainActivity::enviarMedicion()
     // Función: Inserta una lectura del sensor en la tabla Lecturas en la base de datos del servidor.
     // ---------------------------------------------------------------------------------------------
-    public void guardarLecturaEnServidor(Lectura lectura, Context contexto) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ConstantesAplicacion.URL_GUARDADO_LECTURAS,
-                response -> {
-                    try {
-                        SQLiteDatabase db = this.getWritableDatabase();
-                        JSONObject obj = new JSONObject(response);
-                        // En caso de tener éxito...
-                        if (!obj.getBoolean("error")) {
-                            // ...almacena la lectura en SQLite con estado sincronizado.
-                            db.beginTransaction();
-                            long numeroLectura = guardarLecturaEnLocal(db, lectura, ConstantesAplicacion.LECTURA_SINCRONIZADA_CON_SERVIDOR);
-                            db.setTransactionSuccessful();
-                            db.endTransaction();
-                            db.close();
-                            Log.d("LecturasDbHelper", "Lectura número " + numeroLectura + " almacenada");
-                            // En caso de error...
-                        } else {
-                            // ...guarda la lectura en SQLite con estado no sincronizado.
-                            Log.d("LecturasDbHelper", "Error devuelto por el servidor: " + obj.getBoolean("error"));
-                            db.beginTransaction();
-                            long numeroLectura = guardarLecturaEnLocal(db, lectura, ConstantesAplicacion.LECTURA_NO_SINCRONIZADA_CON_SERVIDOR);
-                            db.setTransactionSuccessful();
-                            db.endTransaction();
-                            db.close();
-                            Log.d("LecturasDbHelper", "Lectura número " + numeroLectura + " almacenada");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },
-                // En caso de no recibir respuesta del servidor almacenar la lectura en SQLite
-                // con estado no sincronizado.
-                error -> {
-                    SQLiteDatabase db = this.getWritableDatabase();
-                    db.beginTransaction();
-                    Log.d("LecturasDbHelper", "No se ha podido contactar con el servidor:" + error);
-                    long numeroLectura = guardarLecturaEnLocal(db, lectura, ConstantesAplicacion.LECTURA_NO_SINCRONIZADA_CON_SERVIDOR);
-                    Log.d("LecturasDbHelper", "Lectura número " + numeroLectura + " almacenada");
-                    db.setTransactionSuccessful();
-                    db.endTransaction();
-                    db.close();
-                }) {
+    public void guardarLecturaEnServidor(Lectura lectura, LecturaCallback lecturaCallback) {
+        Call<Lectura> call = MyApiAdapter.getApiService().guardarLecturaEnServidor(lectura.getDia(), lectura.getHora(), lectura.getUbicacion(), String.valueOf(lectura.getValor()), lectura.getIdMagnitud(), lectura.getIdUsuario());
+        call.enqueue(new Callback<Lectura>() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("momento", lectura.getMomento());
-                params.put("ubicacion", lectura.getUbicacion());
-                params.put("valor", String.valueOf(lectura.getValor()));
-                params.put("idMagnitud", lectura.getIdMagnitud());
-                return params;
+            public void onResponse(Call<Lectura> call, Response<Lectura> response) {
+                Log.d("LogicaResponse guardarLecturaenServidor", "Lectura insertada en servidor " + response.body());
+                //lecturaCallback.crearCopiaDeSeguridad();
             }
-        };
-        VolleySingleton.tomarInstancia(contexto).anyadirAColaPeticiones(stringRequest);
+
+            @Override
+            public void onFailure(Call<Lectura> call, Throwable t) {
+                Log.d("LogicaFail guardarLecturaenServidor", t.getLocalizedMessage());
+                lecturaCallback.onFailure();
+            }
+        });
     }
 
+    public void guardarLecturaEstacion(String dia, String hora, String ubicacion, String valor, String idMagnitud) {
+        Call<String> call = MyApiAdapter.getApiService().guardarLecturaEstacion(dia, hora, ubicacion, valor, idMagnitud);
+        call.enqueue(this);
+    }
+
+    public void calibrarSensor(String usuario, String desviacion) {
+        Call<String> call = MyApiAdapter.getApiService().calibrarSensor(usuario, desviacion);
+        call.enqueue(this);
+    }
+
+    public void consultaLecturaEstacion(String dia, String hora, String ubicacion, LecturaCallback lecturaCallback) {
+        Call<String> call = MyApiAdapter.getApiService().consultarLecturaEstacion(dia, hora, ubicacion);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.isSuccessful()) {
+                    Log.d("LogicaGeo consultaLecturaEstacion", response.body());
+                    if(response.body().matches("0")){
+                        Log.d("LogicaCron consultaLecturaEstacion", response.message());
+                        Log.d("LogicaCron consultaLecturaEstacion", response.headers().toString());
+                        lecturaCallback.hacerScrapping();
+                    }
+                    else{
+                        Log.d("LogicaGeo consultaLecturaEstacion", response.message());
+                        lecturaCallback.actualizarDesviacion(response.body(), String.valueOf(TratamientoDeLecturas.valor));
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("Logica", t.getLocalizedMessage());
+                lecturaCallback.onFailure();
+            }
+        });
+
+    }
+
+    public static void consultarDesviacion(String idUsuario, LecturaCallback lecturaCallback){
+        Call<String> call = MyApiAdapter.getApiService().consultarDesviacion(idUsuario);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.isSuccessful()) {
+                    Log.d("LogicaDesv consultarDesviacion", response.body());
+                    lecturaCallback.cogerDesviacion(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("LogicaDesv consultarDesviacion", t.getLocalizedMessage());
+                lecturaCallback.onFailure();
+            }
+        });
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    //                  -> Cursor
+    //                  getLecuras() <-
+    //
+    // Invocado desde: MainActivity::cargarLecturas()
+    // Función: Nos da todas las lecturas almacenadas en SQLite.
+    // ---------------------------------------------------------------------------------------------
+    public boolean getLectura(String dia, String hora, String ubicacion) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.beginTransaction();
+        String sql = "SELECT * FROM Lecturas WHERE " + DIA + "='" + dia + "' AND " + HORA + "='" + hora + "' AND " + UBICACION + "='" + ubicacion + "';";
+        Cursor lecturas = db.rawQuery(sql, null);
+        int datoExistente = lecturas.getCount();
+        lecturas.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        if (datoExistente > 0){
+            return true;
+        }
+        else{
+            return  false;
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    //                  -> Cursor
+    //                  getLecurasNoSincronizadas() <-
+    //
+    // Invocado desde: ComprobadorEstadoRed::onReceive()
+    // Función: Nos da todas las lecturas que no se encuentran en la base de datos del servidor.
+    // ---------------------------------------------------------------------------------------------
+    public ArrayList<Lectura> getLecurasNoSincronizadas(String idUsuario) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Lectura> lecturas = new ArrayList<>();
+        db.beginTransaction();
+        String sql = "SELECT * FROM lecturas  WHERE estadoSincronizacionServidor = 0 AND idUsuario = '" + idUsuario+"';";
+        Cursor lecturasNoSincronizadas = db.rawQuery(sql, null);
+
+        if (lecturasNoSincronizadas.moveToFirst()) {
+            Log.d("ComprobadorEstadoRedWorker", "Hay datos");
+            do {
+                // ...se llama a la función para guardar la lectura no sincronizada a MySQL.
+                Lectura lectura = new Lectura(lecturasNoSincronizadas.getString(lecturasNoSincronizadas.getColumnIndex(DIA)),
+                        lecturasNoSincronizadas.getString(lecturasNoSincronizadas.getColumnIndex(HORA)),
+                        lecturasNoSincronizadas.getString(lecturasNoSincronizadas.getColumnIndex(UBICACION)),
+                        lecturasNoSincronizadas.getInt(lecturasNoSincronizadas.getColumnIndex(VALOR)),
+                        lecturasNoSincronizadas.getString(lecturasNoSincronizadas.getColumnIndex(ID_MAGNITUD)),
+                        lecturasNoSincronizadas.getString(lecturasNoSincronizadas.getColumnIndex(ID_USUARIO)),
+                        lecturasNoSincronizadas.getInt(lecturasNoSincronizadas.getColumnIndex(ESTADO_SINCRONIZACION_SERVIDOR)));
+
+                lecturas.add(lectura);
+            } while (lecturasNoSincronizadas.moveToNext()); // do while()
+            Log.d("Logica", "Éxito");
+        } // if()
+        lecturasNoSincronizadas.close();
+        Log.d("Logica", lecturas.toString());
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        return lecturas;
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    //                  borrarLecturasSincronizadas() ->
+    //
+    // Invocado desde: MainActivity::haLlegadoUnBeacon()
+    // Función: Borra todas las lecturas que ya se encuentran en la base de datos del servidor.
+    // ---------------------------------------------------------------------------------------------
+    public void borrarLecturasSincronizadas() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.beginTransaction();
+        db.execSQL("DELETE FROM Lecturas WHERE estadoSincronizacionServidor = 1");
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    //                  -> Buleano
+    //                  actualizarEstadoDeSincronizacionLectura() ->
+    //                  <-2 Textos, N
+    //
+    // Invocado desde: ComprobadorEstadoRed::guardarLectura()
+    // Función: Actualiza el estado de sincronización de una lectura recogida offline que acaba de
+    //          ser guardada en el servidor
+    // ---------------------------------------------------------------------------------------------
+    public boolean actualizarEstadoDeSincronizacionLectura(String dia, String hora, String ubicacion, String idUsuario, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ESTADO_SINCRONIZACION_SERVIDOR, status);
+        Log.d("Base de Datos", "Actualizando estado de sincronización");
+        // La siguiente sentencia SQL sería la correcta, pero por algún motivo sale un error.
+        //db.execSQL("UPDATE " + TABLE_NAME + " SET " + contentValues + " WHERE " + MOMENTO + "=" + momento + " AND " + UBICACION + "=" + ubicacion);
+        // near "Oct": syntax error (code 1 SQLITE_ERROR): , while compiling: UPDATE Lecturas SET estadoSincronizacionServidor=1 WHERE momento=Fri Oct 23 07:14:46 GMT+02:00 2020 AND ubicacion=38.9735361 - -0.1801669
+
+        // Esta sentencia consigue los mismos efectos pero de una forma más chapucera y muy generalista.
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " + contentValues + " WHERE " + DIA + "='" + dia + "' AND " + HORA + "='" + hora + "' AND " + UBICACION + "='" + ubicacion + "' AND " + ID_USUARIO + "='" + idUsuario);
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        return true;
+    }
+
+    @Override
+    public void onResponse(Call<String> call, Response<String> response) {
+        Log.d("Logica onResponse call", call.request().method());
+        Log.d("Logica onResponse response message", response.message());
+        if(response.isSuccessful() && call.request().method().matches("GET")){
+            Log.d("Logica onResponse headers", response.headers().toString());
+        }
+    }
+
+    @Override
+    public void onFailure(Call<String> call, Throwable t) {
+        Log.d("Logica onFailure call", call.request().method());
+        Log.d("Logica onFailure throwable", t.getLocalizedMessage());
+    }
+
+    public void borrar(){
+        mContexto.deleteDatabase(RUTA_BD+NOMBRE_BD);
+    }
     // ---------------------------------------------------------------------------------------------
     //                  consultarMedia() -> N
     //                  <- URL, fecha
@@ -284,17 +427,22 @@ public class Logica extends SQLiteOpenHelper {
     // Invocado desde: MainActivity
     // Función: Obtiene la media de un usuario en un dia
     // ---------------------------------------------------------------------------------------------
-    public void consultarMedia(String URL, String fecha){
+    public static void consultarMedia(String URL, String fecha, String hora){
         //declara una peticion
-        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, URL+"?dia="+fecha+"&idUsuario="+ConstantesAplicacion.ID_USUARIO, null, response -> {
+
+        RequestQueue requestQueue = Volley.newRequestQueue(MyApplication.getAppContext());
+
+        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, URL+"?dia="+fecha+"&hora="+hora+"&idUsuario="+ConstantesAplicacion.ID_USUARIO, null, response -> {
             int res = 1;
             try {
                 res=response.getInt("valor");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.e("hola", response.toString());
-
+            Log.e("Consultar Media", response.toString());
+            if(res==0){
+                res = 1;
+            }
             ConstantesAplicacion.MEDIA = res;
 
         }, error ->  ConstantesAplicacion.MEDIA=0)
@@ -310,11 +458,14 @@ public class Logica extends SQLiteOpenHelper {
         //procesar la peticiones hechas por nuestra app
 
 
-        VolleySingleton.tomarInstancia(MyApplication.getAppContext()).anyadirAColaPeticiones(stringRequest);
-        MainActivity.valorMedia.setText(ConstantesAplicacion.MEDIA +"%");
-        MainActivity.porcentajeCont.setProgress(ConstantesAplicacion.MEDIA);
-    }
+        requestQueue.add(stringRequest);
+        try{MainActivity.valorMedia.setText(ConstantesAplicacion.MEDIA +"%");
+            MainActivity.porcentajeCont.setProgress(ConstantesAplicacion.MEDIA);}
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
+    }
     // ---------------------------------------------------------------------------------------------
     //                  consultarDistancia() -> N
     //                  <- URL, fecha
@@ -324,6 +475,9 @@ public class Logica extends SQLiteOpenHelper {
     // ---------------------------------------------------------------------------------------------
     public void consultarDistancia(String URL, String fecha){
         //declara una peticion
+
+        RequestQueue requestQueue = Volley.newRequestQueue(MyApplication.getAppContext());
+
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, URL+"?idUsuario="+ConstantesAplicacion.ID_USUARIO+"&dia="+fecha, null, response -> {
 
             int res = 1;
@@ -348,7 +502,7 @@ public class Logica extends SQLiteOpenHelper {
         //procesar la peticiones hechas por nuestra app
 
 
-        VolleySingleton.tomarInstancia(MyApplication.getAppContext()).anyadirAColaPeticiones(stringRequest);
+        requestQueue.add(stringRequest);
 
     }
     // ---------------------------------------------------------------------------------------------
@@ -356,10 +510,13 @@ public class Logica extends SQLiteOpenHelper {
     //                  <- URL, fecha
     //
     // Invocado desde:
-    // Función: Obtiene la distancia de un usuario en un dia
+    // Función: Obtiene los pasos de un usuario en un dia
     // ---------------------------------------------------------------------------------------------
     public void consultarPasos(String URL, String fecha){
         //declara una peticion
+
+        RequestQueue requestQueue = Volley.newRequestQueue(MyApplication.getAppContext());
+
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, URL+"?idUsuario="+ConstantesAplicacion.ID_USUARIO+"&dia="+fecha, null, response -> {
 
             int res = 1;
@@ -384,7 +541,7 @@ public class Logica extends SQLiteOpenHelper {
         //procesar la peticiones hechas por nuestra app
 
 
-        VolleySingleton.tomarInstancia(MyApplication.getAppContext()).anyadirAColaPeticiones(stringRequest);
+        requestQueue.add(stringRequest);
 
     }
     // ---------------------------------------------------------------------------------------------
@@ -394,10 +551,21 @@ public class Logica extends SQLiteOpenHelper {
     // Invocado desde: Cualquier método de consulta que necesite la fecha
     // Función: Obtiene la fecha actual
     // ---------------------------------------------------------------------------------------------
-    public String getFecha(){
+    public static String getFecha(){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDateTime now = LocalDateTime.now();
-        //enviar los parametros ()
+        return dtf.format(now);
+    }
+    // ---------------------------------------------------------------------------------------------
+    //                  getFecha() -> Texto
+    //                  <-
+    //
+    // Invocado desde: Cualquier método de consulta que necesite la hora
+    // Función: Obtiene la hora actual
+    // ---------------------------------------------------------------------------------------------
+    public static String getHora(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH");
+        LocalDateTime now = LocalDateTime.now();
         return dtf.format(now);
     }
     // ---------------------------------------------------------------------------------------------
@@ -436,6 +604,8 @@ public class Logica extends SQLiteOpenHelper {
     // ---------------------------------------------------------------------------------------------
     public void iniciarDistancia(){
         if(ConstantesAplicacion.DISTANCIA==-1){
+            RequestQueue requestQueue = Volley.newRequestQueue(MyApplication.getAppContext());
+
             StringRequest stringRequest = new StringRequest(Request.Method.POST, ConstantesAplicacion.URL_GUARDADO_DISTANCIA, response -> {
 
             }, error -> Log.e("hola", error.toString()))
@@ -462,14 +632,14 @@ public class Logica extends SQLiteOpenHelper {
             //procesar la peticiones hechas por nuestra app
 
 
-            VolleySingleton.tomarInstancia(MyApplication.getAppContext()).anyadirAColaPeticiones(stringRequest);
+            requestQueue.add(stringRequest);
             consultarDistancia(ConstantesAplicacion.URL_CONSULTA_DISTANCIA, getFecha());
         }
 
     }
     // ---------------------------------------------------------------------------------------------
     //                  subirDistanciaYPasos() ->
-    //                  <-
+    //                  <-URL, Latlng, LatLng
     //
     // Invocado desde: iniciarDistancia() y actualizarDistancia()
     // Función: Sube al servidor la distancia y pasos
@@ -479,6 +649,7 @@ public class Logica extends SQLiteOpenHelper {
         double distancia = distancia(p1,p2);
         int pasos = pasos(distancia);
         int dist = (int) Math.round(distancia);
+        RequestQueue requestQueue = Volley.newRequestQueue(MyApplication.getAppContext());
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, response -> {
 
@@ -493,7 +664,7 @@ public class Logica extends SQLiteOpenHelper {
                 parametros.put("idUsuario", ConstantesAplicacion.ID_USUARIO);
                 parametros.put("dia", getFecha());
                 parametros.put("distancia", String.valueOf(dist+ConstantesAplicacion.DISTANCIA));
-                parametros.put("distancia", String.valueOf(pasos+ConstantesAplicacion.PASOS));
+                parametros.put("pasos", String.valueOf(pasos+ConstantesAplicacion.PASOS));
                 return parametros;
             }
         };
@@ -506,109 +677,130 @@ public class Logica extends SQLiteOpenHelper {
         //procesar la peticiones hechas por nuestra app
 
 
-        VolleySingleton.tomarInstancia(MyApplication.getAppContext()).anyadirAColaPeticiones(stringRequest);
+        requestQueue.add(stringRequest);
         consultarDistancia(ConstantesAplicacion.URL_CONSULTA_DISTANCIA, getFecha());
     }
     // ---------------------------------------------------------------------------------------------
-    //                  -> Cursor
-    //                  getLecuras() <-
+    //                  actualizarMedia() ->
+    //                  <-URL, int
     //
-    // Invocado desde: MainActivity::cargarLecturas()
-    // Función: Nos da todas las lecturas almacenadas en SQLite.
+    // Invocado desde: haLlegadoUnBeacon( )
+    // Función: Sube al servidor la media
     // ---------------------------------------------------------------------------------------------
-    public boolean getLectura(String momento, String ubicacion) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        db.beginTransaction();
-        String sql = "SELECT * FROM Lecturas WHERE momento = '" + momento + "' AND ubicacion = '" + ubicacion + "' ORDER BY momento ASC;";
-        Cursor lecturas = db.rawQuery(sql, null);
-        int datoExistente = lecturas.getCount();
-        lecturas.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
-        if (datoExistente > 0){
-            return true;
-        }
-        else{
-            return  false;
-        }
+    public static void actualizarMedia(String URL, int valor){
+        int mediaAnterior = ConstantesAplicacion.MEDIA;
+        int mediaActual = (mediaAnterior + (valor/350*100))/2;
+        String val = String.valueOf(mediaActual);
+        RequestQueue requestQueue = Volley.newRequestQueue(MyApplication.getAppContext());
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, response -> {
+
+        }, error -> Log.e("hola", error.toString()))
+        {
+            //indicar los parametros que vamos a enviar
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new LinkedHashMap<>();
+                //enviar los parametros ()
+                parametros.put("dia", getFecha());
+                parametros.put("hora", getHora());
+                parametros.put("idUsuario", String.valueOf(ConstantesAplicacion.ID_USUARIO));
+                parametros.put("valor", val);
+                return parametros;
+            }
+        };
+
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //procesar la peticiones hechas por nuestra app
+
+
+        requestQueue.add(stringRequest);
+        consultarMedia(ConstantesAplicacion.URL_CONSULTA_MEDIA, getFecha(), getHora());
     }
-
     // ---------------------------------------------------------------------------------------------
-    //                  -> Cursor
-    //                  getLecurasNoSincronizadas() <-
+    //                  insertarMedia() ->
+    //                  <-URL, int
     //
-    // Invocado desde: ComprobadorEstadoRed::onReceive()
-    // Función: Nos da todas las lecturas que no se encuentran en la base de datos del servidor.
+    // Invocado desde: haLlegadoUnBeacon( )
+    // Función: Sube al servidor la media
     // ---------------------------------------------------------------------------------------------
-    public ArrayList<Lectura> getLecurasNoSincronizadas() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Lectura> lecturas = new ArrayList<Lectura>();
-        db.beginTransaction();
-        String sql = "SELECT * FROM lecturas  WHERE estadoSincronizacionServidor = 0;";
-        Cursor lecturasNoSincronizadas = db.rawQuery(sql, null);
+    public static void insertarMedia(String URL, int valor){
 
-        if (lecturasNoSincronizadas.moveToFirst()) {
-            Log.d("ComprobadorEstadoRedWorker", "Hay datos");
-            do {
-                // ...se llama a la función para guardar la lectura no sincronizada a MySQL.
-                Lectura lectura = new Lectura(lecturasNoSincronizadas.getString(lecturasNoSincronizadas.getColumnIndex(MOMENTO)),
-                        lecturasNoSincronizadas.getString(lecturasNoSincronizadas.getColumnIndex(UBICACION)),
-                        lecturasNoSincronizadas.getInt(lecturasNoSincronizadas.getColumnIndex(VALOR)),
-                        lecturasNoSincronizadas.getString(lecturasNoSincronizadas.getColumnIndex(ID_MAGNITUD)),
-                        lecturasNoSincronizadas.getInt(lecturasNoSincronizadas.getColumnIndex(ESTADO_SINCRONIZACION_SERVIDOR)));
+        String val = String.valueOf(valor);
+        RequestQueue requestQueue = Volley.newRequestQueue(MyApplication.getAppContext());
 
-                lecturas.add(lectura);
-            } while (lecturasNoSincronizadas.moveToNext()); // do while()
-            Log.d("Logica", "Éxito");
-        } // if()
-        lecturasNoSincronizadas.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
-        return lecturas;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, response -> {
+
+        }, error -> Log.e("hola", error.toString()))
+        {
+            //indicar los parametros que vamos a enviar
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new LinkedHashMap<>();
+                //enviar los parametros ()
+                parametros.put("dia", getFecha());
+                parametros.put("hora", getHora());
+                parametros.put("idUsuario", String.valueOf(ConstantesAplicacion.ID_USUARIO));
+                parametros.put("valor", val);
+                return parametros;
+            }
+        };
+
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //procesar la peticiones hechas por nuestra app
+
+
+        requestQueue.add(stringRequest);
+        consultarMedia(ConstantesAplicacion.URL_CONSULTA_MEDIA, getFecha(), getHora());
     }
-
     // ---------------------------------------------------------------------------------------------
-    //                  borrarLecturasSincronizadas() ->
+    //                  actualizarSensor() ->
+    //                  <-
     //
-    // Invocado desde: MainActivity::haLlegadoUnBeacon()
-    // Función: Borra todas las lecturas que ya se encuentran en la base de datos del servidor.
+    // Invocado desde:
+    // Función: Actualiza el estado de un sensor en la bdd
     // ---------------------------------------------------------------------------------------------
-    public void borrarLecturasSincronizadas() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        db.beginTransaction();
-        db.execSQL("DELETE FROM Lecturas WHERE estadoSincronizacionServidor = 1");
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
-    }
+    public static void actualizarSensor(String URL, String estado){
+        //declara una peticion
+        RequestQueue requestQueue = Volley.newRequestQueue(MyApplication.getAppContext());
 
-    // ---------------------------------------------------------------------------------------------
-    //                  -> Buleano
-    //                  actualizarEstadoDeSincronizacionLectura() ->
-    //                  <-2 Textos, N
-    //
-    // Invocado desde: ComprobadorEstadoRed::guardarLectura()
-    // Función: Actualiza el estado de sincronización de una lectura recogida offline que acaba de
-    //          ser guardada en el servidor
-    // ---------------------------------------------------------------------------------------------
-    public boolean actualizarEstadoDeSincronizacionLectura(String momento, String ubicacion, int status) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.beginTransaction();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(ESTADO_SINCRONIZACION_SERVIDOR, status);
-        Log.d("Base de Datos", "Actualizando estado de sincronización");
-        // La siguiente sentencia SQL sería la correcta, pero por algún motivo sale un error.
-        //db.execSQL("UPDATE " + TABLE_NAME + " SET " + contentValues + " WHERE " + MOMENTO + "=" + momento + " AND " + UBICACION + "=" + ubicacion);
-        // near "Oct": syntax error (code 1 SQLITE_ERROR): , while compiling: UPDATE Lecturas SET estadoSincronizacionServidor=1 WHERE momento=Fri Oct 23 07:14:46 GMT+02:00 2020 AND ubicacion=38.9735361 - -0.1801669
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, response -> {
 
-        // Esta sentencia consigue los mismos efectos pero de una forma más chapucera y muy generalista.
-        db.execSQL("UPDATE " + TABLE_NAME + " SET " + contentValues + " WHERE " + MOMENTO + "='" + momento + "' AND " + UBICACION + "=" + ubicacion);
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
-        return true;
+        }, error -> Log.e("hola", error.toString()))
+        {
+            //indicar los parametros que vamos a enviar
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new LinkedHashMap<>();
+                //enviar los parametros ()
+                parametros.put("idUsuario", ConstantesAplicacion.ID_USUARIO);
+                parametros.put("estado", estado);
+
+                return parametros;
+            }
+        };
+
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //procesar la peticiones hechas por nuestra app
+
+
+        requestQueue.add(stringRequest);
+
     }
 } // class
 // --------------------------------------------------------------

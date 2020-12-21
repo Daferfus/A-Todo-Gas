@@ -3,7 +3,6 @@ package com.example.daferfus_upv.btle.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
@@ -15,15 +14,16 @@ import com.example.daferfus_upv.btle.POJOS.RecyclerViewAdapter;
 import com.example.daferfus_upv.btle.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LogrosActivity extends AppCompatActivity {
 
     private static final String TAG = "Logros";
 
     //variables
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mDescriptions = new ArrayList<>();
-    private ArrayList<Integer> mImageUrls = new ArrayList<>();
+    private final ArrayList<String> mNames = new ArrayList<>();
+    private final ArrayList<String> mDescriptions = new ArrayList<>();
+    private final ArrayList<Integer> mImageUrls = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,13 +34,10 @@ public class LogrosActivity extends AppCompatActivity {
         getImages();
 
 
-        findViewById(R.id.linearAtras).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent i = new Intent (getApplicationContext(), MainActivity.class);
-                i.putExtra("Usuario", envioDatosEntreActividades());
-                startActivity(i);
-            }
+        findViewById(R.id.linearAtras).setOnClickListener(v -> {
+            Intent i = new Intent (getApplicationContext(), MainActivity.class);
+            startActivity(i);
+            finish();
         });
     }
 
@@ -121,11 +118,8 @@ public class LogrosActivity extends AppCompatActivity {
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mNames, mImageUrls, mDescriptions);
         recyclerViewVertical.setAdapter(adapter);
     }
-
-
-    public String envioDatosEntreActividades(){
-        Bundle datos = this.getIntent().getExtras();
-        String variable_string = datos.getString("Usuario");
-        return variable_string;
+    public void mostrarUsuario() {
+        List<String> emailContra=LoginActivity.cargarPreferenciasString(getApplicationContext());
+        //textViewUsuario.setText("Hola " + emailContra.get(0));
     }
 }

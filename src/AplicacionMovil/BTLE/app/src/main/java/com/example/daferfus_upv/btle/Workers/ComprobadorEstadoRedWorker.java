@@ -1,8 +1,6 @@
 package com.example.daferfus_upv.btle.Workers;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -16,11 +14,11 @@ import androidx.work.WorkerParameters;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
-import com.example.daferfus_upv.btle.Activities.MainActivity;
 import com.example.daferfus_upv.btle.BD.Lectura;
 import com.example.daferfus_upv.btle.BD.Logica;
 import com.example.daferfus_upv.btle.BD.VolleySingleton;
 import com.example.daferfus_upv.btle.ConstantesAplicacion;
+import com.example.daferfus_upv.btle.Utilidades.LecturaCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,13 +28,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.ID_MAGNITUD;
-import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.MOMENTO;
-import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.UBICACION;
-import static com.example.daferfus_upv.btle.BD.LecturasContract.LecturasEntry.VALOR;
+import static com.example.daferfus_upv.btle.ConstantesAplicacion.ID_USUARIO;
+
 
 public class ComprobadorEstadoRedWorker extends Worker {
-    private Context contexto;
+    private final Context contexto;
     public Logica mDBHelper;
     public SQLiteDatabase mDb;
     public ComprobadorEstadoRedWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -75,13 +71,18 @@ public class ComprobadorEstadoRedWorker extends Worker {
             // ...y si se está conectado por WiFi o por datos...
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
 
+                String idUsuario = ID_USUARIO;
                 // ...se cogen todas las lecturas no sincronizadas...
-                ArrayList<Lectura> lecturasNoSincronizadas = mDBHelper.getLecurasNoSincronizadas();
+                ArrayList<Lectura> lecturasNoSincronizadas = mDBHelper.getLecurasNoSincronizadas(idUsuario);
                 for (int i = 0; i<=lecturasNoSincronizadas.size()-1; i++){
-                    guardarLectura(lecturasNoSincronizadas.get(i).getMomento(),
+                    Lectura lectura = new Lectura(lecturasNoSincronizadas.get(i).getDia(),
+                            lecturasNoSincronizadas.get(i).getHora(),
                             lecturasNoSincronizadas.get(i).getUbicacion(),
                             lecturasNoSincronizadas.get(i).getValor(),
-                            lecturasNoSincronizadas.get(i).getIdMagnitud());
+                            lecturasNoSincronizadas.get(i).getIdMagnitud(),
+                            lecturasNoSincronizadas.get(i).getIdUsuario(),
+                            lecturasNoSincronizadas.get(i).getEstadoSincronizacionServidor());
+                    guardarLectura(lectura);
                 }
                 Log.d("ComprobadorEstadoRedWorker", "No hay datos");
             } // if()
@@ -98,40 +99,33 @@ public class ComprobadorEstadoRedWorker extends Worker {
     // Invocado desde: MainActivity::insertarLectura()
     // Función: Guarda los datos no sincronizados a MySQL.
     // ---------------------------------------------------------------------------------------------
-    private void guardarLectura(final String momento, final String ubicacion, final int valor, final String idMagnitud) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ConstantesAplicacion.URL_GUARDADO_LECTURAS,
-                response -> {
-                    try {
-                        JSONObject obj = new JSONObject(response);
-                        if (!obj.getBoolean("error")) {
-                            // Se actualiza el estado en SqLite...
-                            boolean actualizado = mDBHelper.actualizarEstadoDeSincronizacionLectura(momento, ubicacion, ConstantesAplicacion.LECTURA_SINCRONIZADA_CON_SERVIDOR);
-                            if (actualizado){
-                                Log.d("Base de Datos", "Dato sincronizado con servidor");
-                            }
-                            else{
-                                Log.d("Base de Datos", "Dato no sincronizado con servidor");
-                            }
-                        } // if()
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } // try()
-                },
-                error -> {
-                    Log.d("ComprobarEstadoRed", "No se ha podido contactar con el servidor:" + error);
-                }) {
+    private void guardarLectura(Lectura lectura) {
+        Log.d("ComprobadorEstadoRedWorker", "Lectura es " + lectura.toString());
+        mDBHelper.guardarLecturaEnServidor(lectura, new LecturaCallback() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("momento", momento);
-                params.put("ubicacion", ubicacion);
-                params.put("valor", String.valueOf(valor));
-                params.put("idMagnitud", idMagnitud);
-                return params;
-            }
-        };
+            public void hacerScrapping() {
 
-        VolleySingleton.tomarInstancia(contexto).anyadirAColaPeticiones(stringRequest);
+            }
+
+            @Override
+            public void crearCopiaDeSeguridad() {
+                mDBHelper.borrarLecturasSincronizadas();
+            }
+
+            @Override
+            public void cogerDesviacion(String desviacion) {
+
+            }
+
+            @Override
+            public void actualizarDesviacion(String valorLecturaEstacion, String valorLectura) {
+
+            }
+
+            @Override
+            public void onFailure() {
+            }
+        });
     } // ()
 } // class
 // --------------------------------------------------------------

@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,10 +25,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private static final String TAG = "RecyclerViewAdapter";
 
     //vars
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mDescriptions = new ArrayList<>();
-    private ArrayList<Integer> mImageUrls = new ArrayList<>();
-    private Context mContext;
+    private final ArrayList<String> mNames;
+    private final ArrayList<String> mDescriptions;
+    private final ArrayList<Integer> mImageUrls;
+    private final Context mContext;
 
     public RecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<Integer> imageUrls, ArrayList<String> descriptions) {
         mNames = names;
@@ -36,6 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         mContext = context;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
@@ -53,12 +55,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.name.setText(mNames.get(position));
 
-        holder.image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on an image: " + mDescriptions.get(position));
-                Toast.makeText(mContext, mDescriptions.get(position), Toast.LENGTH_SHORT).show();
-            }
+        holder.image.setOnClickListener(view -> {
+            Log.d(TAG, "onClick: clicked on an image: " + mDescriptions.get(position));
+            Toast.makeText(mContext, mDescriptions.get(position), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -67,7 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mImageUrls.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         CircleImageView image;
         TextView name;
@@ -81,12 +80,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             increase_progress=itemView.findViewById(R.id.progress_increase);
             increase_button=itemView.findViewById(R.id.increase_value);
 
-            increase_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(increase_progress.getProgress()!=100){
-                        increase_progress.setProgress(increase_progress.getProgress()+10);
-                    }
+            increase_button.setOnClickListener(v -> {
+                if(increase_progress.getProgress()!=100){
+                    increase_progress.setProgress(increase_progress.getProgress()+10);
                 }
             });
         }

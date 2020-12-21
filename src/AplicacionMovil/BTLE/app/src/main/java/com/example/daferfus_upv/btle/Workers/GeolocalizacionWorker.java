@@ -22,12 +22,18 @@ import androidx.work.WorkerParameters;
 import com.example.daferfus_upv.btle.BD.Logica;
 import com.example.daferfus_upv.btle.ConstantesAplicacion;
 import com.example.daferfus_upv.btle.Utilidades.GpsUtils;
+import com.example.daferfus_upv.btle.Utilidades.LecturaCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static com.example.daferfus_upv.btle.ConstantesAplicacion.ID_USUARIO;
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
@@ -36,13 +42,13 @@ public class GeolocalizacionWorker extends Worker {
     // --------------------------------------------------------------
     // Geolocalización
     // --------------------------------------------------------------
-    private FusedLocationProviderClient mFusedLocationClient;
+    private final FusedLocationProviderClient mFusedLocationClient;
     private double latitud = 0.0, longitud = 0.0;
     private double latitudAuxiliar = 0.0, longitudAuxiliar = 0.0;
     public static String ubicacion;
-    private Logica logica;
-    private LocationRequest peticionLocalizacion;
-    private LocationCallback callbackLocalizacion;
+    private final Logica logica;
+    private final LocationRequest peticionLocalizacion;
+    private final LocationCallback callbackLocalizacion;
 
     private boolean noCambiaPosicion = false;
     public static boolean estaGPSActivo = false;
@@ -105,7 +111,52 @@ public class GeolocalizacionWorker extends Worker {
                             } else {
                                 LatLng antes = new LatLng(latitudAuxiliar, longitudAuxiliar);
                                 LatLng ahora = new LatLng(latitud, longitud);
+                                LatLng estacion = new LatLng(38.9688889, -0.1902778);
                                 logica.subirDistanciaYPasos(ConstantesAplicacion.URL_ACTUALIZAR_DISTANCIA, antes, ahora);
+                                double distanciaEstacion = Logica.distancia(ahora,estacion);
+                                Log.d("GeolocalizacionWorker", "Distancia con respecto a la estacion: " + distanciaEstacion);
+                                if(distanciaEstacion < 2000.000000000) {
+                                    DateTimeFormatter dtfDia = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                                    LocalDateTime nowDia = LocalDateTime.now();
+
+                                    String dia = dtfDia.format(nowDia);
+
+                                    DateTimeFormatter dtfHora = DateTimeFormatter.ofPattern("HH");
+                                    LocalDateTime nowHora = LocalDateTime.now();
+
+                                    String hora = dtfHora.format(nowHora);
+                                    logica.consultaLecturaEstacion(dia, hora, "38.9688889 - -0.1902778", new LecturaCallback() {
+                                        @Override
+                                        public void hacerScrapping() {
+
+                                        }
+
+                                        @Override
+                                        public void crearCopiaDeSeguridad() {
+
+                                        }
+
+                                        @Override
+                                        public void cogerDesviacion(String desviacion) {
+
+                                        }
+
+                                        @Override
+                                        public void actualizarDesviacion(String valorLecturaEstacion, String valorLectura) {
+                                            Integer lecturaEstacion = Integer.parseInt(valorLecturaEstacion);
+                                            Integer lecturaUsuario = Integer.parseInt(valorLectura);
+
+                                            int desviacion = lecturaEstacion - lecturaUsuario;
+
+                                            logica.calibrarSensor(ID_USUARIO, Integer.toString(desviacion));
+                                        }
+
+                                        @Override
+                                        public void onFailure() {
+
+                                        }
+                                    });
+                                }
                                 // ...añade los datos a la variable auxiliar...
                                 latitudAuxiliar = latitud;
                                 longitudAuxiliar = longitud;
